@@ -8,13 +8,15 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
 import net.runelite.api.GroundObject;
+import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.client.eventbus.Subscribe;
 
 @Singleton
+@Slf4j
 public class XarpusHandler extends RoomHandler
 
 {
@@ -31,6 +33,15 @@ public class XarpusHandler extends RoomHandler
 		if (event.getGroundObject() != null && XarpusConstants.XARPUS_EXHUMED_ID == event.getGroundObject().getId())
 		{
 			exhumeds.add(event.getGroundObject());
+		}
+	}
+
+	@Subscribe
+	public void onGroundObjectDespawned(GroundObjectDespawned event)
+	{
+		if (event.getGroundObject() != null && XarpusConstants.XARPUS_EXHUMED_ID == event.getGroundObject().getId() && exhumeds.contains(event.getGroundObject()))
+		{
+			exhumeds.remove(event.getGroundObject());
 		}
 	}
 }

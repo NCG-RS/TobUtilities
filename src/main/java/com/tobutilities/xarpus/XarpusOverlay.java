@@ -1,21 +1,19 @@
 package com.tobutilities.xarpus;
 
 import com.tobutilities.TobUtilitiesConfig;
-import com.tobutilities.xarpus.XarpusHandler;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GroundObject;
-import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
-import java.awt.Shape;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 
+@Slf4j
 public class XarpusOverlay extends Overlay
 {
 		private final Client client;
@@ -38,24 +36,12 @@ public class XarpusOverlay extends Overlay
 		@Override
 		public Dimension render (Graphics2D graphics)
 		{
-			// First, set up the outlines for rendering
 			for (GroundObject groundObject : xarpusHandler.getExhumeds())
 			{
-				renderObjectOutline(graphics, groundObject, Color.BLACK);
-
+				modelOutlineRenderer.drawOutline(groundObject, config.getBorderWidth(), config.getHighlightColor(), config.getBorderFeather());
 			}
-
 			return null;
-		}
-
-	private void renderObjectOutline(Graphics2D graphics, GroundObject groundObject, Color color)
-	{
-		Shape objectClickbox = groundObject.getConvexHull();
-		if (objectClickbox != null)
-		{
-			graphics.setColor(color);
-			graphics.draw(objectClickbox);
 		}
 	}
 
-}
+

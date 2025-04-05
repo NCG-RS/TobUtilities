@@ -14,22 +14,12 @@ public interface TobUtilitiesConfig extends Config
 		position = 6
 )
 	String Metronome = "Metronome";
+
 	@ConfigItem(
-			position = 1,
-			keyName = "enableMetronome",
-			name = "Visual Metronome",
-			description = "Enable visual metronome",
-			section = Metronome
-	)
-	default boolean enableMetronome()
-	{
-		return true;
-	}
-	@ConfigItem(
-		position = 2,
-		keyName = "enableNyloMetronome",
-		name = "Enable Nylo Metronome",
-		description = "Enable visual metronome in Nylo room - Enter on 0, waves spawn on 1",
+		position = 1,
+		keyName = "enableNylocas Metronome",
+		name = "Enable Nylocas Metronome",
+		description = "Enable visual metronome in Nylo room",
 		section = Metronome
 	)
 	default boolean enableNyloMetronome()
@@ -37,9 +27,9 @@ public interface TobUtilitiesConfig extends Config
 		return true;
 	}
 	@ConfigItem(
-		position = 3,
-		keyName = "enableSoteMetronome",
-		name = "Visual Sote Metronome",
+		position = 2,
+		keyName = "enableSotetsegMetronome",
+		name = "Enable Sotetseg Metronome",
 		description = "Enable visual metronome in Sotetseg room",
 		section = Metronome
 	)
@@ -48,9 +38,9 @@ public interface TobUtilitiesConfig extends Config
 		return true;
 	}
 	@ConfigItem(
-		position = 4,
+		position = 3,
 		keyName = "enableXarpusMetronome",
-		name = "Visual Xarpus Metronome",
+		name = "Enable Xarpus Metronome",
 		description = "Enable visual metronome in Xarpus room",
 		section = Metronome
 	)
@@ -59,9 +49,9 @@ public interface TobUtilitiesConfig extends Config
 		return true;
 	}
 	@ConfigItem(
-		position = 5,
+		position = 4,
 		keyName = "enableVerzikMetronome",
-		name = "Visual Verik Metronome",
+		name = "Enable Verik Metronome",
 		description = "Enable visual metronome in Verzik room",
 		section = Metronome
 	)
@@ -71,7 +61,7 @@ public interface TobUtilitiesConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 6,
+			position = 5,
 			keyName = "countColor",
 			name = "Tick Number Color",
 			description = "Configures the color of tick number",
@@ -82,7 +72,7 @@ public interface TobUtilitiesConfig extends Config
 		return Color.CYAN;
 	}
 	@ConfigItem(
-		position = 7,
+		position = 6,
 		keyName = "metronomeBorderWidth",
 		name = "MetronomeBorderWidth",
 		description = "Configures the width of the colored metronome border",
@@ -375,6 +365,28 @@ public interface TobUtilitiesConfig extends Config
 		section = Verzik
 	)
 	default Color dawnbringerOverlayColor()
+	{
+		return new Color(0, 82, 87);
+	}
+	@ConfigItem(
+			keyName = "highlightExplodingNylocasTile",
+			name = "Highlight exploding nylocas tile",
+			description = "Have the tile highlighted for exploding nylos",
+			position = 5,
+			section = Verzik
+	)
+	default boolean highlightExplodingNylocas()
+	{
+		return false;
+	}
+	@ConfigItem(
+			keyName = "nylocasTileColor",
+			name = "Nylocas tile Color",
+			description = "Color for highlighting exploding nylocas tile",
+			position = 6,
+			section = Verzik
+	)
+	default Color verzikNylocasColor()
 	{
 		return new Color(0, 82, 87);
 	}

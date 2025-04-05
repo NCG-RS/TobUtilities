@@ -13,12 +13,13 @@ import com.tobutilities.common.player.PlayerTwoOrbOverlay;
 import com.tobutilities.common.player.PlayerThreeOrbOverlay;
 import com.tobutilities.common.player.PlayerFourOrbOverlay;
 import com.tobutilities.common.player.PlayerFiveOrbOverlay;
+import com.tobutilities.nylocas.NylocasHandler;
 import com.tobutilities.nylocas.NylocasOverlay;
 import com.tobutilities.verzik.VerzikHandler;
+import com.tobutilities.verzik.VerzikOverlay;
 import com.tobutilities.xarpus.XarpusHandler;
 import com.tobutilities.xarpus.XarpusOverlay;
-import lombok.Getter;
-import lombok.Setter;
+
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
@@ -33,11 +34,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
 
 import javax.inject.Inject;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 
 @PluginDescriptor(
-	name = "Tob Utilities",
+	name = "ToB Utilities",
 	description = "Various tools for the theatre of blood",
 	tags = {"timers", "overlays", "tick", "theatre", "metronome", "tob", "maiden", "bloat", "nylo", "xarpus", "verzik"}
 )
@@ -69,6 +69,8 @@ public class TobUtilitiesPlugin extends Plugin
 	@Inject
 	private XarpusOverlay xarpusOverlay;
 	@Inject
+	private VerzikOverlay verzikOverlay;
+	@Inject
 	private TobUtilitiesConfig config;
 	@Inject
 	private KeyManager keyManager;
@@ -78,6 +80,8 @@ public class TobUtilitiesPlugin extends Plugin
 	private MaidenHandler maidenHandler;
 	@Inject
 	private BloatHandler bloatHandler;
+	@Inject
+	private NylocasHandler nylocasHandler;
 	@Inject
 	private XarpusHandler xarpusHandler;
 	@Inject
@@ -104,6 +108,9 @@ public class TobUtilitiesPlugin extends Plugin
 		} else if (region.equals(Region.BLOAT))
 		{
 			bloatHandler.onGameTick(tick);
+		} else if (region.equals(Region.NYLOCAS))
+		{
+			nylocasHandler.onGameTick(tick);
 		}
 		metronomeService.onGameTick(tick);
 	}
@@ -139,6 +146,9 @@ public class TobUtilitiesPlugin extends Plugin
 		if (Region.MAIDEN.equals(region))
 		{
 			maidenHandler.onNpcSpawned(event);
+		} else if (Region.VERZIK.equals(region))
+		{
+			verzikHandler.onNpcSpawned(event);
 		}
 	}
 
@@ -148,6 +158,15 @@ public class TobUtilitiesPlugin extends Plugin
 		if (Region.XARPUS.equals(region))
 		{
 			xarpusHandler.onGroundObjectSpawned(event);
+		}
+	}
+
+	@Subscribe
+	public void onGroundObjectDespawned(GroundObjectDespawned event)
+	{
+		if (Region.XARPUS.equals(region))
+		{
+			xarpusHandler.onGroundObjectDespawned(event);
 		}
 	}
 
@@ -165,6 +184,11 @@ public class TobUtilitiesPlugin extends Plugin
 		return true;
 	}
 
+	@Subscribe
+	void onActorDeath(ActorDeath event){
+		nylocasHandler.onActorDeath(event);
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -175,6 +199,9 @@ public class TobUtilitiesPlugin extends Plugin
 		overlayManager.add(playerFourOrbOverlay);
 		overlayManager.add(playerFiveOrbOverlay);
 		overlayManager.add(maidenOverlay);
+		overlayManager.add(nylocasOverlay);
+		overlayManager.add(xarpusOverlay);
+		overlayManager.add(verzikOverlay);
 		maidenHandler.startUp();
 		keyManager.registerKeyListener(hideVerzikHotkeyListener);
 		hooks.registerRenderableDrawListener(drawListener);
@@ -190,6 +217,9 @@ public class TobUtilitiesPlugin extends Plugin
 		overlayManager.remove(playerFourOrbOverlay);
 		overlayManager.remove(playerFiveOrbOverlay);
 		overlayManager.remove(maidenOverlay);
+		overlayManager.remove(nylocasOverlay);
+		overlayManager.remove(xarpusOverlay);
+		overlayManager.remove(verzikOverlay);
 		keyManager.unregisterKeyListener(hideVerzikHotkeyListener);
 		hooks.unregisterRenderableDrawListener(drawListener);
 	}
