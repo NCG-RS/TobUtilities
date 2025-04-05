@@ -71,7 +71,7 @@ public class MetronomeService
 			{
 				// raid has advanced to next room
 				plugin.region = newTickRegion;
-				if (isCurrentRegionMetronomeEnabled(plugin.region))
+				if (isCurrentRegionMetronomeEnabled())
 				{
 					//enable metronome if applicable
 					setMetronomeDisplayed(true);
@@ -91,7 +91,6 @@ public class MetronomeService
 			return;
 		}
 
-//		setMetronomeDisplayed(true);
 		regionTickCount = plugin.region.getTickCount();
 
 		if (getCurrentColorIndex() >= regionTickCount)
@@ -172,8 +171,9 @@ public class MetronomeService
 		}
 	}
 
-	private boolean isCurrentRegionMetronomeEnabled(Region region)
+	public boolean isCurrentRegionMetronomeEnabled()
 	{
+		Region region = plugin.region;
 		if (Region.NYLOCAS.equals(region) && config.enableNyloMetronome())
 		{
 			return true;

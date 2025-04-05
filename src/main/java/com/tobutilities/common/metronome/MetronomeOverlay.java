@@ -59,7 +59,7 @@ private final MetronomeService metronomeService;
 			setPreferredSize(preferredSize);
 		}
 
-		if (config.enableMetronome() && metronomeService.isMetronomeDisplayed()) {
+		if (metronomeService.isMetronomeDisplayed() && metronomeService.isCurrentRegionMetronomeEnabled()) {
 			// Background
 			graphics.setColor(new Color(0, 0, 0, 155)); // Semi-transparent black
 			graphics.fillRect(0, 0, preferredSize.width, preferredSize.height);
