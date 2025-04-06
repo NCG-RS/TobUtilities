@@ -7,6 +7,7 @@ The primary goal of this plugin is to minimize the need for mid-raid configurati
 ### Maiden
 - Chat message on entry regarding the chance of a scuff based on maidens index
 - Highlighting of scuffed spawns
+
 ![ScuffWarning.PNG](ScuffWarning.PNG)
 
 ### Bloat
