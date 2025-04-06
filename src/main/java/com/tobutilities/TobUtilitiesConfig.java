@@ -296,24 +296,6 @@ public interface TobUtilitiesConfig extends Config
 		return false;
 	}
 
-	@ConfigSection(
-		name = "Xarpus",
-		description = "Change Xarpus settings",
-		position = 4
-	)
-	String Xarpus = "Xarpus Settings";
-
-	@ConfigItem(
-		keyName = "enableHighlightExhumes",
-		name = "Highlight exhumes",
-		description = "Enables highlighting exhumes",
-		position = 1,
-		section = Xarpus
-	)
-	default boolean enableHighlightExhumes()
-	{
-		return false;
-	}
 
 	@ConfigSection(
 		name = "Verzik",
@@ -365,28 +347,6 @@ public interface TobUtilitiesConfig extends Config
 		section = Verzik
 	)
 	default Color dawnbringerOverlayColor()
-	{
-		return new Color(0, 82, 87);
-	}
-	@ConfigItem(
-			keyName = "highlightExplodingNylocasTile",
-			name = "Highlight exploding nylocas tile",
-			description = "Have the tile highlighted for exploding nylos",
-			position = 5,
-			section = Verzik
-	)
-	default boolean highlightExplodingNylocas()
-	{
-		return false;
-	}
-	@ConfigItem(
-			keyName = "nylocasTileColor",
-			name = "Nylocas tile Color",
-			description = "Color for highlighting exploding nylocas tile",
-			position = 6,
-			section = Verzik
-	)
-	default Color verzikNylocasColor()
 	{
 		return new Color(0, 82, 87);
 	}

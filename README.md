@@ -1,6 +1,26 @@
 # Tob Utilities
-Various tob additions
 
+The primary goal of this plugin is to minimize the need for mid-raid configuration changes as well as add some new functionalities
 
-TODO: Fix everything which was broken by moving it out of main plugin class
-Potentially create new native widget to replace use of player 1-5 orb overlayds
+## Features:
+
+### Maiden
+- Chat message on entry regarding the chance of a scuff based on maidens index
+- Highlighting of scuffed spawns
+![ScuffWarning.PNG](ScuffWarning.PNG)
+
+### Bloat
+- The ability to hide self or other players while in bloat room
+
+### Nylocas
+- Aggressive highlighting
+
+### Verzik
+- The ability to hide verzik with a hotkey 
+- An overlay to indicate which player is holding dawnbringer
+
+![dawnoverlay.PNG](dawnoverlay.PNG)
+
+### Metronome
+- A visual metronome which changes tick count based on room
+

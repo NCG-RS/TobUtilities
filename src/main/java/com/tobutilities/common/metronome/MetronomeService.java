@@ -141,7 +141,6 @@ public class MetronomeService
 				//Use teammates entering room to begin instance timer
 				if (message.contains("Wave 3") && config.enableNyloMetronome())
 				{
-					log.info("Teammate advanced to nylocas room - starting instance timer");
 					plugin.region = Region.NYLOCAS;
 					tickCounter = 0;
 					setCurrentColorIndex(0);
@@ -149,7 +148,6 @@ public class MetronomeService
 				}
 				else if (message.contains("Wave 4") && config.enableSoteMetronome())
 				{
-					log.info("Teammate advanced to sotetseg room - starting instance timer");
 					plugin.region = Region.SOTETSEG;
 					tickCounter = 0;
 					setCurrentColorIndex(0);
@@ -157,7 +155,6 @@ public class MetronomeService
 				}
 				else if (message.contains("Wave 5") && config.enableXarpusMetronome())
 				{
-					log.info("Teammate advanced to xarpus room - starting instance timer");
 					plugin.region = Region.XARPUS;
 					tickCounter = 0;
 					setCurrentColorIndex(0);

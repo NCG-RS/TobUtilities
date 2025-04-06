@@ -8,6 +8,7 @@ import com.tobutilities.common.player.TobPlayerOrb;
 import com.tobutilities.TobUtilitiesPlugin;
 import com.tobutilities.TobUtilitiesConfig;
 
+import static com.tobutilities.maiden.MaidenConstants.NYLOCAS_MATOMENOS;
 import static com.tobutilities.verzik.VerzikConstants.EXPLODING_NYLOCAS_NPC_IDS;
 import static com.tobutilities.verzik.VerzikConstants.VERZIK_NAME;
 import java.awt.event.KeyEvent;
@@ -18,6 +19,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
@@ -25,6 +27,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Renderable;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcDespawned;
 import static net.runelite.api.kit.KitType.WEAPON;
 
 import net.runelite.api.events.NpcSpawned;
@@ -39,9 +42,6 @@ public class VerzikHandler extends RoomHandler
 	@Getter
 	private TobPlayerOrb tobPlayerOrb = TobPlayerOrb.UNKNOWN;
 	private boolean isVerzikHidden = false;
-	@Getter
-	private List<NPC> explodingNylocas = new ArrayList<>();
-
 
 	@Inject
 	protected VerzikHandler(TobUtilitiesPlugin plugin, TobUtilitiesConfig config, Client client)
@@ -120,33 +120,9 @@ public class VerzikHandler extends RoomHandler
 		if (renderable instanceof NPC)
 		{
 			NPC npc = (NPC) renderable;
-			if (VERZIK_NAME.equals(npc.getName()) && isVerzikHidden && config.enableHideVerzikHmt())
-			{
-				return false;
-			}
+			return !VERZIK_NAME.equals(npc.getName()) || !isVerzikHidden || !config.enableHideVerzikHmt();
 		}
 		return true;
 	}
 
-	@Subscribe
-	public void onActorDeath(ActorDeath event)
-	{
-		if (event.getActor() instanceof NPC)
-		{
-			explodingNylocas.remove((NPC) event.getActor());
-		}
-	}
-
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
-	{
-		if (config.highlightExplodingNylocas())
-		{
-			NPC npc = event.getNpc();
-			if (EXPLODING_NYLOCAS_NPC_IDS.contains(npc.getId()) && !explodingNylocas.contains(npc))
-			{
-				explodingNylocas.add(npc);
-			}
-		}
-	}
 }

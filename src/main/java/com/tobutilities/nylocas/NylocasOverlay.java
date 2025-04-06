@@ -13,7 +13,6 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 
 public class NylocasOverlay extends Overlay
 {
@@ -30,43 +29,46 @@ public class NylocasOverlay extends Overlay
 		this.config = config;
 
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		for (NPC npc : nylocasHandler.getAggressiveNylocas())
+		if (config.enableHighlightAggressiveNylos())
 		{
-			if (npc == null || npc.isDead())
+			for (NPC npc : nylocasHandler.getAggressiveNylocas())
 			{
-				continue;
-			}
-
-			NPCComposition npcComposition = npc.getTransformedComposition();
-			if (npcComposition == null)
-			{
-				continue;
-			}
-
-			LocalPoint localPoint = npc.getLocalLocation();
-			if (localPoint != null )
-			{
-				tilePolygon = Perspective.getCanvasTileAreaPoly(client, localPoint, npcComposition.getSize());
-				if (tilePolygon != null)
+				if (npc == null || npc.isDead())
 				{
-					renderPoly(graphics, Color.red, tilePolygon, config.getBorderWidth(), true);
+					continue;
+				}
+
+				NPCComposition npcComposition = npc.getTransformedComposition();
+				if (npcComposition == null)
+				{
+					continue;
+				}
+
+				LocalPoint localPoint = npc.getLocalLocation();
+				if (localPoint != null)
+				{
+					tilePolygon = Perspective.getCanvasTileAreaPoly(client, localPoint, npcComposition.getSize());
+					if (tilePolygon != null)
+					{
+						renderPoly(graphics, tilePolygon, config.getBorderWidth());
+					}
 				}
 			}
 		}
 		return null;
 	}
-	private void renderPoly(Graphics2D graphics, Color outlineColor, Shape polygon, double width, boolean antiAlias)
+	private void renderPoly(Graphics2D graphics,  Shape polygon, double width)
 	{
 		if (polygon != null)
 		{
 			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			graphics.setColor(outlineColor);
+			graphics.setColor(Color.RED);
 			graphics.setStroke(new BasicStroke((float) width));
 			graphics.draw(polygon);
 		}

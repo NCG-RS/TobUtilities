@@ -16,9 +16,6 @@ import com.tobutilities.common.player.PlayerFiveOrbOverlay;
 import com.tobutilities.nylocas.NylocasHandler;
 import com.tobutilities.nylocas.NylocasOverlay;
 import com.tobutilities.verzik.VerzikHandler;
-import com.tobutilities.verzik.VerzikOverlay;
-import com.tobutilities.xarpus.XarpusHandler;
-import com.tobutilities.xarpus.XarpusOverlay;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
@@ -67,10 +64,6 @@ public class TobUtilitiesPlugin extends Plugin
 	@Inject
 	private NylocasOverlay nylocasOverlay;
 	@Inject
-	private XarpusOverlay xarpusOverlay;
-	@Inject
-	private VerzikOverlay verzikOverlay;
-	@Inject
 	private TobUtilitiesConfig config;
 	@Inject
 	private KeyManager keyManager;
@@ -82,8 +75,7 @@ public class TobUtilitiesPlugin extends Plugin
 	private BloatHandler bloatHandler;
 	@Inject
 	private NylocasHandler nylocasHandler;
-	@Inject
-	private XarpusHandler xarpusHandler;
+
 	@Inject
 	private VerzikHandler verzikHandler;
 	@Inject
@@ -101,7 +93,6 @@ public class TobUtilitiesPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-
 		if (region.equals(Region.VERZIK))
 		{
 			verzikHandler.onGameTick(tick);
@@ -146,29 +137,9 @@ public class TobUtilitiesPlugin extends Plugin
 		if (Region.MAIDEN.equals(region))
 		{
 			maidenHandler.onNpcSpawned(event);
-		} else if (Region.VERZIK.equals(region))
-		{
-			verzikHandler.onNpcSpawned(event);
 		}
 	}
 
-	@Subscribe
-	public void onGroundObjectSpawned(GroundObjectSpawned event)
-	{
-		if (Region.XARPUS.equals(region))
-		{
-			xarpusHandler.onGroundObjectSpawned(event);
-		}
-	}
-
-	@Subscribe
-	public void onGroundObjectDespawned(GroundObjectDespawned event)
-	{
-		if (Region.XARPUS.equals(region))
-		{
-			xarpusHandler.onGroundObjectDespawned(event);
-		}
-	}
 
 
 	@VisibleForTesting
@@ -184,9 +155,12 @@ public class TobUtilitiesPlugin extends Plugin
 		return true;
 	}
 
+
 	@Subscribe
 	void onActorDeath(ActorDeath event){
-		nylocasHandler.onActorDeath(event);
+		if (Region.NYLOCAS.equals(region)){
+			nylocasHandler.onActorDeath(event);
+		}
 	}
 
 	@Override
@@ -200,8 +174,6 @@ public class TobUtilitiesPlugin extends Plugin
 		overlayManager.add(playerFiveOrbOverlay);
 		overlayManager.add(maidenOverlay);
 		overlayManager.add(nylocasOverlay);
-		overlayManager.add(xarpusOverlay);
-		overlayManager.add(verzikOverlay);
 		maidenHandler.startUp();
 		keyManager.registerKeyListener(hideVerzikHotkeyListener);
 		hooks.registerRenderableDrawListener(drawListener);
@@ -218,8 +190,6 @@ public class TobUtilitiesPlugin extends Plugin
 		overlayManager.remove(playerFiveOrbOverlay);
 		overlayManager.remove(maidenOverlay);
 		overlayManager.remove(nylocasOverlay);
-		overlayManager.remove(xarpusOverlay);
-		overlayManager.remove(verzikOverlay);
 		keyManager.unregisterKeyListener(hideVerzikHotkeyListener);
 		hooks.unregisterRenderableDrawListener(drawListener);
 	}
