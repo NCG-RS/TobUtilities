@@ -10,15 +10,12 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.util.Text;
 
 @Slf4j
 @Singleton
@@ -129,44 +126,6 @@ public class MetronomeService
 		tickCounter++;
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		try
-		{
-			if (event.getType().equals(ChatMessageType.GAMEMESSAGE))
-			{
-				String message = Text.removeTags(event.getMessage());
-
-				//Use teammates entering room to begin instance timer
-				if (message.contains("Wave 3") && config.enableNyloMetronome())
-				{
-					plugin.region = Region.NYLOCAS;
-					tickCounter = 0;
-					setCurrentColorIndex(0);
-					setMetronomeDisplayed(true);
-				}
-				else if (message.contains("Wave 4") && config.enableSoteMetronome())
-				{
-					plugin.region = Region.SOTETSEG;
-					tickCounter = 0;
-					setCurrentColorIndex(0);
-					setMetronomeDisplayed(true);
-				}
-				else if (message.contains("Wave 5") && config.enableXarpusMetronome())
-				{
-					plugin.region = Region.XARPUS;
-					tickCounter = 0;
-					setCurrentColorIndex(0);
-					setMetronomeDisplayed(true);
-				}
-			}
-		}
-		catch (Exception ex)
-		{
-			log.error(ex.getMessage(), ex);
-		}
-	}
 
 	public boolean isCurrentRegionMetronomeEnabled()
 	{

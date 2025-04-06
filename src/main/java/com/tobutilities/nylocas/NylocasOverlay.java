@@ -1,7 +1,6 @@
 package com.tobutilities.nylocas;
 
 import com.tobutilities.TobUtilitiesConfig;
-import com.tobutilities.maiden.MaidenHandler;
 
 import java.awt.*;
 import javax.inject.Inject;

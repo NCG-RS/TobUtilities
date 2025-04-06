@@ -106,11 +106,6 @@ public class TobUtilitiesPlugin extends Plugin
 		metronomeService.onGameTick(tick);
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		metronomeService.onChatMessage(event);
-	}
 
 	private final HotkeyListener hideVerzikHotkeyListener = new HotkeyListener(() -> config.hideVerzikHotkey())
 	{

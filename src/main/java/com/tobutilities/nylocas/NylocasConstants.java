@@ -1,6 +1,5 @@
 package com.tobutilities.nylocas;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NylocasConstants

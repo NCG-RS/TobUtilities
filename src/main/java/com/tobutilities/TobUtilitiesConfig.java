@@ -24,7 +24,7 @@ public interface TobUtilitiesConfig extends Config
 	)
 	default boolean enableNyloMetronome()
 	{
-		return true;
+		return false;
 	}
 	@ConfigItem(
 		position = 2,
@@ -35,7 +35,7 @@ public interface TobUtilitiesConfig extends Config
 	)
 	default boolean enableSoteMetronome()
 	{
-		return true;
+		return false;
 	}
 	@ConfigItem(
 		position = 3,
@@ -46,7 +46,7 @@ public interface TobUtilitiesConfig extends Config
 	)
 	default boolean enableXarpusMetronome()
 	{
-		return true;
+		return false;
 	}
 	@ConfigItem(
 		position = 4,
@@ -57,7 +57,7 @@ public interface TobUtilitiesConfig extends Config
 	)
 	default boolean enableVerzikMetronome()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -262,7 +262,7 @@ public interface TobUtilitiesConfig extends Config
 	)
 	default boolean hideLocalPlayerDuringBloat()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -274,7 +274,7 @@ public interface TobUtilitiesConfig extends Config
 	)
 	default boolean hideOtherPlayersDuringBloat()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigSection(
@@ -293,7 +293,7 @@ public interface TobUtilitiesConfig extends Config
 	)
 	default boolean enableHighlightAggressiveNylos()
 	{
-		return false;
+		return true;
 	}
 
 
@@ -310,9 +310,9 @@ public interface TobUtilitiesConfig extends Config
 		position = 1,
 		section = Verzik
 	)
-	default boolean enableHideVerzikHmt()
+	default boolean enableHideVerzik()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(

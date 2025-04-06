@@ -3,34 +3,25 @@ package com.tobutilities.verzik;
 import com.tobutilities.common.RoomHandler;
 
 
-import com.tobutilities.common.enums.Region;
 import com.tobutilities.common.player.TobPlayerOrb;
 import com.tobutilities.TobUtilitiesPlugin;
 import com.tobutilities.TobUtilitiesConfig;
 
-import static com.tobutilities.maiden.MaidenConstants.NYLOCAS_MATOMENOS;
-import static com.tobutilities.verzik.VerzikConstants.EXPLODING_NYLOCAS_NPC_IDS;
 import static com.tobutilities.verzik.VerzikConstants.VERZIK_NAME;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
 import javax.inject.Inject;
 
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Renderable;
-import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.NpcDespawned;
 import static net.runelite.api.kit.KitType.WEAPON;
 
-import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
 
 
@@ -107,7 +98,7 @@ public class VerzikHandler extends RoomHandler
 	{
 		if (config.hideVerzikHotkey().matches(e))
 		{
-			if (config.enableHideVerzikHmt())
+			if (config.enableHideVerzik())
 			{
 				isVerzikHidden = !isVerzikHidden;
 				e.consume();
@@ -120,7 +111,7 @@ public class VerzikHandler extends RoomHandler
 		if (renderable instanceof NPC)
 		{
 			NPC npc = (NPC) renderable;
-			return !VERZIK_NAME.equals(npc.getName()) || !isVerzikHidden || !config.enableHideVerzikHmt();
+			return !VERZIK_NAME.equals(npc.getName()) || !isVerzikHidden || !config.enableHideVerzik();
 		}
 		return true;
 	}

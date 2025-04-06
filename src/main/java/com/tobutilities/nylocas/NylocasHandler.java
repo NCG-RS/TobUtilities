@@ -12,7 +12,6 @@ import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
 
 import static com.tobutilities.nylocas.NylocasConstants.AGGRESSIVE_NYLOCAS_IDS;

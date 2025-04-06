@@ -1,6 +1,5 @@
 package com.tobutilities.common.metronome;
 
-import com.tobutilities.TobUtilitiesPlugin;
 import com.tobutilities.TobUtilitiesConfig;
 import com.tobutilities.common.enums.FontType;
 import lombok.extern.slf4j.Slf4j;
@@ -15,23 +14,6 @@ import java.awt.*;
 @Slf4j
 public class MetronomeOverlay extends Overlay
 {
-//	private final TobUtilitiesPlugin plugin;
-//	private final TobUtilitiesConfig config;
-//
-//
-//	private static int TITLE_PADDING = 10;
-//	private static final int MINIMUM_SIZE = 16;
-//	private Dimension DEFAULT_SIZE = new Dimension(25, 25);
-//
-//	@Inject
-//	protected MetronomeOverlay(TobUtilitiesPlugin plugin, TobUtilitiesConfig config)
-//	{
-//		this.plugin = plugin;
-//		this.config = config;
-//		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
-//		setMinimumSize(MINIMUM_SIZE);
-//		setResizable(true);
-//	}
 private final MetronomeService metronomeService;
 	private final TobUtilitiesConfig config;
 

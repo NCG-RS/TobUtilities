@@ -1,6 +1,5 @@
 package com.tobutilities.common.player;
 
-import com.tobutilities.TobUtilitiesPlugin;
 import com.tobutilities.verzik.VerzikHandler;
 import java.awt.Color;
 import java.awt.Dimension;
