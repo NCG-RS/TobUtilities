@@ -27,16 +27,19 @@ public class NylocasHandler extends RoomHandler
 	{
 		return aggressiveNylocas;
 	}
+
 	@Inject
 	protected NylocasHandler(TobUtilitiesPlugin plugin, TobUtilitiesConfig config, Client client)
 	{
 		super(plugin, config, client);
 	}
+
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
 		NPC npc = event.getNpc();
-		if (AGGRESSIVE_NYLOCAS_IDS.contains(npc.getId()) && !aggressiveNylocas.contains(npc)){
+		if (AGGRESSIVE_NYLOCAS_IDS.contains(npc.getId()) && !aggressiveNylocas.contains(npc))
+		{
 			aggressiveNylocas.add(npc);
 		}
 	}
@@ -45,7 +48,8 @@ public class NylocasHandler extends RoomHandler
 	public void onNpcChanged(NpcChanged event)
 	{
 		NPC npc = event.getNpc();
-		if (AGGRESSIVE_NYLOCAS_IDS.contains(npc.getId()) && !aggressiveNylocas.contains(npc) && !npc.isDead()){
+		if (AGGRESSIVE_NYLOCAS_IDS.contains(npc.getId()) && !aggressiveNylocas.contains(npc) && !npc.isDead())
+		{
 			aggressiveNylocas.add(npc);
 		}
 	}
@@ -57,13 +61,16 @@ public class NylocasHandler extends RoomHandler
 	}
 
 	@Subscribe
-	public void onActorDeath(ActorDeath event){
-		if (event.getActor() instanceof NPC){
-            aggressiveNylocas.remove((NPC) event.getActor());
+	public void onActorDeath(ActorDeath event)
+	{
+		if (event.getActor() instanceof NPC)
+		{
+			aggressiveNylocas.remove((NPC) event.getActor());
 		}
 	}
 
-	public void shutDown(){
+	public void shutDown()
+	{
 		aggressiveNylocas.clear();
 	}
 }

@@ -96,7 +96,8 @@ public class TobUtilitiesPlugin extends Plugin
 		if (region.equals(Region.VERZIK))
 		{
 			verzikHandler.onGameTick(tick);
-		} else if (region.equals(Region.BLOAT))
+		}
+		else if (region.equals(Region.BLOAT))
 		{
 			bloatHandler.onGameTick(tick);
 		}
@@ -111,7 +112,7 @@ public class TobUtilitiesPlugin extends Plugin
 		{
 			if (Region.VERZIK.equals(region))
 			{
-			verzikHandler.keyPressed(e);
+				verzikHandler.keyPressed(e);
 			}
 		}
 
@@ -129,21 +130,24 @@ public class TobUtilitiesPlugin extends Plugin
 		if (Region.MAIDEN.equals(region))
 		{
 			maidenHandler.onNpcSpawned(event);
-		} else if (Region.NYLOCAS.equals(region)){
+		}
+		else if (Region.NYLOCAS.equals(region))
+		{
 			nylocasHandler.onNpcSpawned(event);
 		}
 	}
 
 
-
 	@VisibleForTesting
 	boolean shouldDraw(Renderable renderable, boolean drawingUI)
 	{
-		if (Region.BLOAT.equals(region)){
+		if (Region.BLOAT.equals(region))
+		{
 			return bloatHandler.shouldDraw(renderable);
 		}
 
-		if (Region.VERZIK.equals(region)){
+		if (Region.VERZIK.equals(region))
+		{
 			return verzikHandler.shouldDraw(renderable, drawingUI);
 		}
 		return true;
@@ -151,15 +155,19 @@ public class TobUtilitiesPlugin extends Plugin
 
 
 	@Subscribe
-	void onActorDeath(ActorDeath event){
-		if (Region.NYLOCAS.equals(region)){
+	void onActorDeath(ActorDeath event)
+	{
+		if (Region.NYLOCAS.equals(region))
+		{
 			nylocasHandler.onActorDeath(event);
 		}
 	}
+
 	@Subscribe
 	public void onNpcChanged(NpcChanged event)
 	{
-		if (Region.NYLOCAS.equals(region)){
+		if (Region.NYLOCAS.equals(region))
+		{
 			nylocasHandler.onNpcChanged(event);
 		}
 	}
@@ -171,7 +179,8 @@ public class TobUtilitiesPlugin extends Plugin
 		{
 			maidenHandler.onNpcDespawned(event);
 		}
-		else if (Region.NYLOCAS.equals(region)){
+		else if (Region.NYLOCAS.equals(region))
+		{
 			nylocasHandler.onNpcDespawned(event);
 		}
 	}

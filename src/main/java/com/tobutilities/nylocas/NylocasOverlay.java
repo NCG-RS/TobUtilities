@@ -62,7 +62,8 @@ public class NylocasOverlay extends Overlay
 		}
 		return null;
 	}
-	private void renderPoly(Graphics2D graphics,  Shape polygon, double width)
+
+	private void renderPoly(Graphics2D graphics, Shape polygon, double width)
 	{
 		if (polygon != null)
 		{

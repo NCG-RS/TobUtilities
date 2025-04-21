@@ -12,7 +12,7 @@ public interface TobUtilitiesConfig extends Config
 		name = "Metronome",
 		description = "Config for visual Metronome",
 		position = 6
-)
+	)
 	String Metronome = "Metronome";
 
 	@ConfigItem(
@@ -26,6 +26,7 @@ public interface TobUtilitiesConfig extends Config
 	{
 		return false;
 	}
+
 	@ConfigItem(
 		position = 2,
 		keyName = "enableSotetsegMetronome",
@@ -37,6 +38,7 @@ public interface TobUtilitiesConfig extends Config
 	{
 		return false;
 	}
+
 	@ConfigItem(
 		position = 3,
 		keyName = "enableXarpusMetronome",
@@ -48,6 +50,7 @@ public interface TobUtilitiesConfig extends Config
 	{
 		return false;
 	}
+
 	@ConfigItem(
 		position = 4,
 		keyName = "enableVerzikMetronome",
@@ -61,16 +64,17 @@ public interface TobUtilitiesConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
-			keyName = "countColor",
-			name = "Tick Number Color",
-			description = "Configures the color of tick number",
-			section = Metronome
+		position = 5,
+		keyName = "countColor",
+		name = "Tick Number Color",
+		description = "Configures the color of tick number",
+		section = Metronome
 	)
 	default Color NumberColor()
 	{
 		return Color.CYAN;
 	}
+
 	@ConfigItem(
 		position = 6,
 		keyName = "metronomeBorderWidth",
@@ -85,21 +89,24 @@ public interface TobUtilitiesConfig extends Config
 
 
 	@ConfigItem(
-			position = 7,
-			keyName = "fontType",
-			name = "Font Type",
-			description = "Change the font of the Tick Number",
-			section = Metronome
+		position = 7,
+		keyName = "fontType",
+		name = "Font Type",
+		description = "Change the font of the Tick Number",
+		section = Metronome
 	)
-	default FontType fontType() { return FontType.REGULAR; }
+	default FontType fontType()
+	{
+		return FontType.REGULAR;
+	}
 
 	@Alpha
 	@ConfigItem(
-			position = 8,
-			keyName = "tick1Color",
-			name = "1st Tick Color",
-			description = "Configures the color of 1st tick",
-			section = Metronome
+		position = 8,
+		keyName = "tick1Color",
+		name = "1st Tick Color",
+		description = "Configures the color of 1st tick",
+		section = Metronome
 	)
 	default Color getTick1Color()
 	{
@@ -108,11 +115,11 @@ public interface TobUtilitiesConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			position = 9,
-			keyName = "tick2Color",
-			name = "2nd Tick Color",
-			description = "Configures the color of 2nd tick",
-			section = Metronome
+		position = 9,
+		keyName = "tick2Color",
+		name = "2nd Tick Color",
+		description = "Configures the color of 2nd tick",
+		section = Metronome
 	)
 	default Color getTick2Color()
 	{
@@ -121,59 +128,63 @@ public interface TobUtilitiesConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			position = 10,
-			keyName = "tick3Color",
-			name = "3rd Tick Color",
-			description = "Configures the color of 3rd tick if enabled",
-			section = Metronome
+		position = 10,
+		keyName = "tick3Color",
+		name = "3rd Tick Color",
+		description = "Configures the color of 3rd tick if enabled",
+		section = Metronome
 	)
 	default Color getTick3Color()
 	{
 		return Color.DARK_GRAY;
 	}
+
 	@Alpha
 	@ConfigItem(
-			position = 11,
-			keyName = "tick4Color",
-			name = "4th Tick Color",
-			description = "Configures the color of the 4rd tick if enabled",
-			section = Metronome
+		position = 11,
+		keyName = "tick4Color",
+		name = "4th Tick Color",
+		description = "Configures the color of the 4rd tick if enabled",
+		section = Metronome
 	)
 	default Color getTick4Color()
 	{
 		return Color.BLACK;
 	}
+
 	@Alpha
 	@ConfigItem(
-			position = 12,
-			keyName = "tick5Color",
-			name = "5th Tick Color",
-			description = "Configures the color of the 5th tick if enabled",
-			section = Metronome
+		position = 12,
+		keyName = "tick5Color",
+		name = "5th Tick Color",
+		description = "Configures the color of the 5th tick if enabled",
+		section = Metronome
 	)
 	default Color getTick5Color()
 	{
 		return new Color(112, 131, 255);
 	}
+
 	@Alpha
 	@ConfigItem(
-			position = 13,
-			keyName = "tick6Color",
-			name = "6th Tick Color",
-			description = "Configures the color of the 6th tick if enabled",
-			section = Metronome
+		position = 13,
+		keyName = "tick6Color",
+		name = "6th Tick Color",
+		description = "Configures the color of the 6th tick if enabled",
+		section = Metronome
 	)
 	default Color getTick6Color()
 	{
 		return new Color(0, 23, 171);
 	}
+
 	@Alpha
 	@ConfigItem(
-			position = 14,
-			keyName = "tick7Color",
-			name = "7th Tick Color",
-			description = "Configures the color of the 7th tick if enabled",
-			section = Metronome
+		position = 14,
+		keyName = "tick7Color",
+		name = "7th Tick Color",
+		description = "Configures the color of the 7th tick if enabled",
+		section = Metronome
 	)
 	default Color getTick7Color()
 	{
@@ -198,6 +209,7 @@ public interface TobUtilitiesConfig extends Config
 	{
 		return true;
 	}
+
 	@ConfigItem(
 		position = 1,
 		keyName = "scuffedSpawnHighlight",
@@ -209,6 +221,7 @@ public interface TobUtilitiesConfig extends Config
 	{
 		return false;
 	}
+
 	@ConfigItem(
 		position = 2,
 		keyName = "highlightColor",
@@ -303,6 +316,7 @@ public interface TobUtilitiesConfig extends Config
 		position = 5
 	)
 	String Verzik = "Verzik Settings";
+
 	@ConfigItem(
 		keyName = "enableHideVerzikHotkey",
 		name = "Enable hide Verzik ",

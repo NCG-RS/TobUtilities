@@ -55,7 +55,7 @@ public class MaidenHandler extends RoomHandler
 			if (StringUtils.isNotBlank(npc.getName()) && THE_MAIDEN_OF_SUGADINTI.equals(npc.getName()))
 			{
 				nylocasMatomenosSpawns.clear();
-				if (config.enableMaidenIndexMessage() )
+				if (config.enableMaidenIndexMessage())
 				{
 					handleScuffedSpawnChatMessage(npc);
 				}
@@ -66,9 +66,9 @@ public class MaidenHandler extends RoomHandler
 				int y = npc.getWorldLocation().getRegionY();
 				Point p = new Point(x, y);
 				if (MaidenConstants.SCUFFED_SPAWNS.contains(p) && NYLOCAS_MATOMENOS.equals(npc.getName()) && !nylocasMatomenosSpawns.contains(npc))
-					{
-						nylocasMatomenosSpawns.add(npc);
-					}
+				{
+					nylocasMatomenosSpawns.add(npc);
+				}
 			}
 		}
 	}
@@ -129,7 +129,8 @@ public class MaidenHandler extends RoomHandler
 		nylocasMatomenosSpawns.remove(event.getNpc());
 	}
 
-	public void shutDown(){
+	public void shutDown()
+	{
 		nylocasMatomenosSpawns.clear();
 	}
 

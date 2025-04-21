@@ -11,10 +11,11 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 import javax.inject.Inject;
 import java.awt.*;
+
 @Slf4j
 public class MetronomeOverlay extends Overlay
 {
-private final MetronomeService metronomeService;
+	private final MetronomeService metronomeService;
 	private final TobUtilitiesConfig config;
 
 
@@ -36,12 +37,14 @@ private final MetronomeService metronomeService;
 	public Dimension render(Graphics2D graphics)
 	{
 		Dimension preferredSize = getPreferredSize();
-		if (preferredSize == null) {
+		if (preferredSize == null)
+		{
 			preferredSize = DEFAULT_SIZE;
 			setPreferredSize(preferredSize);
 		}
 
-		if (metronomeService.isMetronomeDisplayed() && metronomeService.isCurrentRegionMetronomeEnabled()) {
+		if (metronomeService.isMetronomeDisplayed() && metronomeService.isCurrentRegionMetronomeEnabled())
+		{
 			// Background
 			graphics.setColor(new Color(0, 0, 0, 155)); // Semi-transparent black
 			graphics.fillRect(0, 0, preferredSize.width, preferredSize.height);
@@ -54,10 +57,13 @@ private final MetronomeService metronomeService;
 
 			TITLE_PADDING = (Math.min(preferredSize.width, preferredSize.height) / 2 - 4);
 
-			if (config.fontType() == FontType.REGULAR) {
+			if (config.fontType() == FontType.REGULAR)
+			{
 				graphics.setFont(new Font(FontManager.getRunescapeFont().getName(), Font.BOLD,
 					Math.min(preferredSize.width, preferredSize.height) / 2));
-			} else {
+			}
+			else
+			{
 				graphics.setFont(new Font(config.fontType().toString(), Font.BOLD,
 					Math.min(preferredSize.width, preferredSize.height) / 2));
 			}

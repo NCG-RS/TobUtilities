@@ -48,7 +48,8 @@ public class BloatHandler extends RoomHandler
 	{
 		for (NPC npc : client.getWorldView(-1).npcs())
 		{
-			if (PESTILENT_BLOAT.equals(npc.getName())){
+			if (PESTILENT_BLOAT.equals(npc.getName()))
+			{
 				isBloatAlive = !npc.isDead();
 			}
 		}

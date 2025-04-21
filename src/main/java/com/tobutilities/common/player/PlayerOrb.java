@@ -8,7 +8,8 @@ import java.awt.Rectangle;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 
-public interface PlayerOrb {
+public interface PlayerOrb
+{
 
 	default Dimension getDimension(Graphics2D graphics, Color overlayColor, Client client, VerzikHandler verzikHandler)
 	{

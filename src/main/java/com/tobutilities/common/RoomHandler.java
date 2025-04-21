@@ -26,6 +26,7 @@ public class RoomHandler
 	{
 		return configManager.getConfig(TobUtilitiesConfig.class);
 	}
+
 	@Inject
 	protected RoomHandler(TobUtilitiesPlugin plugin, TobUtilitiesConfig config, Client client)
 	{

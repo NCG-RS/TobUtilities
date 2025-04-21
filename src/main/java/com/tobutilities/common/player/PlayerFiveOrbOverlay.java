@@ -16,6 +16,7 @@ public class PlayerFiveOrbOverlay extends Overlay implements PlayerOrb
 	private final Client client;
 	private final VerzikHandler verzikHandler;
 	private final TobUtilitiesConfig config;
+
 	@Inject
 	protected PlayerFiveOrbOverlay(Client client, VerzikHandler verzikHandler, TobUtilitiesConfig config)
 	{
@@ -26,11 +27,13 @@ public class PlayerFiveOrbOverlay extends Overlay implements PlayerOrb
 		setLayer(OverlayLayer.MANUAL);
 		drawAfterLayer(TobPlayerOrb.PLAYER_5.getOrbBackgroundId());
 	}
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		Color overlayColor = config.dawnbringerOverlayColor();
-		if (!TobPlayerOrb.PLAYER_5.equals(verzikHandler.getTobPlayerOrb())){
+		if (!TobPlayerOrb.PLAYER_5.equals(verzikHandler.getTobPlayerOrb()))
+		{
 			return null;
 		}
 		return getDimension(graphics, overlayColor, client, verzikHandler);
