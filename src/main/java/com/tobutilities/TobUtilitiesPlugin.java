@@ -99,9 +99,6 @@ public class TobUtilitiesPlugin extends Plugin
 		} else if (region.equals(Region.BLOAT))
 		{
 			bloatHandler.onGameTick(tick);
-		} else if (region.equals(Region.NYLOCAS))
-		{
-			nylocasHandler.onGameTick(tick);
 		}
 		metronomeService.onGameTick(tick);
 	}
@@ -132,6 +129,8 @@ public class TobUtilitiesPlugin extends Plugin
 		if (Region.MAIDEN.equals(region))
 		{
 			maidenHandler.onNpcSpawned(event);
+		} else if (Region.NYLOCAS.equals(region)){
+			nylocasHandler.onNpcSpawned(event);
 		}
 	}
 
@@ -157,6 +156,25 @@ public class TobUtilitiesPlugin extends Plugin
 			nylocasHandler.onActorDeath(event);
 		}
 	}
+	@Subscribe
+	public void onNpcChanged(NpcChanged event)
+	{
+		if (Region.NYLOCAS.equals(region)){
+			nylocasHandler.onNpcChanged(event);
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		if (Region.MAIDEN.equals(region))
+		{
+			maidenHandler.onNpcDespawned(event);
+		}
+		else if (Region.NYLOCAS.equals(region)){
+			nylocasHandler.onNpcDespawned(event);
+		}
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -169,7 +187,6 @@ public class TobUtilitiesPlugin extends Plugin
 		overlayManager.add(playerFiveOrbOverlay);
 		overlayManager.add(maidenOverlay);
 		overlayManager.add(nylocasOverlay);
-		maidenHandler.startUp();
 		keyManager.registerKeyListener(hideVerzikHotkeyListener);
 		hooks.registerRenderableDrawListener(drawListener);
 	}
@@ -185,6 +202,8 @@ public class TobUtilitiesPlugin extends Plugin
 		overlayManager.remove(playerFiveOrbOverlay);
 		overlayManager.remove(maidenOverlay);
 		overlayManager.remove(nylocasOverlay);
+		nylocasHandler.shutDown();
+		maidenHandler.shutDown();
 		keyManager.unregisterKeyListener(hideVerzikHotkeyListener);
 		hooks.unregisterRenderableDrawListener(drawListener);
 	}

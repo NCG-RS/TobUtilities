@@ -293,7 +293,7 @@ public interface TobUtilitiesConfig extends Config
 	)
 	default boolean enableHighlightAggressiveNylos()
 	{
-		return true;
+		return false;
 	}
 
 

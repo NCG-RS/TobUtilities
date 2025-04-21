@@ -11,7 +11,9 @@ import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.events.ActorDeath;
-import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcChanged;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
 
 import static com.tobutilities.nylocas.NylocasConstants.AGGRESSIVE_NYLOCAS_IDS;
@@ -31,13 +33,27 @@ public class NylocasHandler extends RoomHandler
 		super(plugin, config, client);
 	}
 	@Subscribe
-	public void onGameTick(GameTick tick)
+	public void onNpcSpawned(NpcSpawned event)
 	{
-		for (NPC npc : client.getWorldView(-1).npcs()){
-			if (AGGRESSIVE_NYLOCAS_IDS.contains(npc.getId()) && !aggressiveNylocas.contains(npc) && !npc.isDead()){
-				aggressiveNylocas.add(npc);
-			}
+		NPC npc = event.getNpc();
+		if (AGGRESSIVE_NYLOCAS_IDS.contains(npc.getId()) && !aggressiveNylocas.contains(npc)){
+			aggressiveNylocas.add(npc);
 		}
+	}
+
+	@Subscribe
+	public void onNpcChanged(NpcChanged event)
+	{
+		NPC npc = event.getNpc();
+		if (AGGRESSIVE_NYLOCAS_IDS.contains(npc.getId()) && !aggressiveNylocas.contains(npc) && !npc.isDead()){
+			aggressiveNylocas.add(npc);
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		aggressiveNylocas.remove(event.getNpc());
 	}
 
 	@Subscribe
@@ -45,5 +61,9 @@ public class NylocasHandler extends RoomHandler
 		if (event.getActor() instanceof NPC){
             aggressiveNylocas.remove((NPC) event.getActor());
 		}
+	}
+
+	public void shutDown(){
+		aggressiveNylocas.clear();
 	}
 }

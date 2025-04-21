@@ -16,6 +16,7 @@ import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -64,13 +65,10 @@ public class MaidenHandler extends RoomHandler
 				int x = npc.getWorldLocation().getRegionX();
 				int y = npc.getWorldLocation().getRegionY();
 				Point p = new Point(x, y);
-				if (MaidenConstants.SCUFFED_SPAWNS.contains(p) && NYLOCAS_MATOMENOS.equals(npc.getName()))
-				{
-					if (!nylocasMatomenosSpawns.contains(npc))
+				if (MaidenConstants.SCUFFED_SPAWNS.contains(p) && NYLOCAS_MATOMENOS.equals(npc.getName()) && !nylocasMatomenosSpawns.contains(npc))
 					{
 						nylocasMatomenosSpawns.add(npc);
 					}
-				}
 			}
 		}
 	}
@@ -126,12 +124,12 @@ public class MaidenHandler extends RoomHandler
 
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	public void onNpcDespawned(NpcDespawned event)
 	{
-		nylocasMatomenosSpawns.removeIf(npc -> npc.isDead() || !NYLOCAS_MATOMENOS.equals(npc.getName()));
+		nylocasMatomenosSpawns.remove(event.getNpc());
 	}
 
-	public void startUp(){
+	public void shutDown(){
 		nylocasMatomenosSpawns.clear();
 	}
 
