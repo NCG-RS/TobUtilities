@@ -25,3 +25,7 @@ The primary goal of this plugin is to minimize the need for mid-raid configurati
 ### Metronome
 - A visual metronome which changes tick count based on room
 
+Special thanks to Vincent0955 who created the original visual metronome
+
+
+I can be reached on discord at n_c_g. for any questions/comments/concerns or feature requests

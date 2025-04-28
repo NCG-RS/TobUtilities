@@ -5,6 +5,7 @@ import com.tobutilities.TobUtilitiesPlugin;
 import com.tobutilities.common.enums.Region;
 import static com.tobutilities.common.util.CommonUtils.getRegionByRegionId;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
@@ -149,4 +150,12 @@ public class MetronomeService
 		return false;
 	}
 
+	public void keyPressed(KeyEvent e)
+	{
+		if (config.metronomeResetHotkey().matches(e))
+		{
+			currentColorIndex = 0;
+			e.consume();
+		}
+	}
 }

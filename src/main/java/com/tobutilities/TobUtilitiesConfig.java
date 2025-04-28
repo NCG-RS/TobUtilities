@@ -191,6 +191,18 @@ public interface TobUtilitiesConfig extends Config
 		return new Color(107, 255, 124);
 	}
 
+	@ConfigItem(
+		position = 15,
+		keyName = "metronomeResetHotkey ",
+		name = "Metronome Reset Hotkey",
+		description = "Hotkey to reset metronome",
+		section = Metronome
+	)
+	default Keybind metronomeResetHotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+
 	@ConfigSection(
 		name = "Maiden",
 		description = "Change Maiden settings",

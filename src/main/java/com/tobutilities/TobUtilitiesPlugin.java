@@ -123,6 +123,21 @@ public class TobUtilitiesPlugin extends Plugin
 		}
 	};
 
+	private final HotkeyListener metronomeResetHotkeyListener = new HotkeyListener(() -> config.metronomeResetHotkey())
+	{
+		@Override
+		public void keyPressed(KeyEvent e)
+		{
+			metronomeService.keyPressed(e);
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e)
+		{
+			hotkeyReleased();
+		}
+	};
+
 
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
@@ -197,6 +212,7 @@ public class TobUtilitiesPlugin extends Plugin
 		overlayManager.add(maidenOverlay);
 		overlayManager.add(nylocasOverlay);
 		keyManager.registerKeyListener(hideVerzikHotkeyListener);
+		keyManager.registerKeyListener(metronomeResetHotkeyListener);
 		hooks.registerRenderableDrawListener(drawListener);
 	}
 
@@ -214,6 +230,7 @@ public class TobUtilitiesPlugin extends Plugin
 		nylocasHandler.shutDown();
 		maidenHandler.shutDown();
 		keyManager.unregisterKeyListener(hideVerzikHotkeyListener);
+		keyManager.unregisterKeyListener(metronomeResetHotkeyListener);
 		hooks.unregisterRenderableDrawListener(drawListener);
 	}
 }
