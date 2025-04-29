@@ -31,7 +31,7 @@ public class PlayerThreeOrbOverlay extends Overlay implements PlayerOrb
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Color overlayColor = config.dawnbringerOverlayColor();
+		Color overlayColor = getOverlayColor(verzikHandler, config);
 		if (!TobPlayerOrb.PLAYER_3.equals(verzikHandler.getTobPlayerOrb()))
 		{
 			return null;

@@ -93,14 +93,15 @@ public class TobUtilitiesPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (region.equals(Region.VERZIK))
-		{
-			verzikHandler.onGameTick(tick);
-		}
-		else if (region.equals(Region.BLOAT))
-		{
-			bloatHandler.onGameTick(tick);
-		}
+		verzikHandler.onGameTick(tick);
+//		if (region.equals(Region.VERZIK))
+//		{
+//			verzikHandler.onGameTick(tick);
+//		}
+//		else if (region.equals(Region.BLOAT))
+//		{
+//			bloatHandler.onGameTick(tick);
+//		}
 		metronomeService.onGameTick(tick);
 	}
 
@@ -200,6 +201,12 @@ public class TobUtilitiesPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		verzikHandler.onItemContainerChanged(event);
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -211,6 +218,7 @@ public class TobUtilitiesPlugin extends Plugin
 		overlayManager.add(playerFiveOrbOverlay);
 		overlayManager.add(maidenOverlay);
 		overlayManager.add(nylocasOverlay);
+		verzikHandler.startUp();
 		keyManager.registerKeyListener(hideVerzikHotkeyListener);
 		keyManager.registerKeyListener(metronomeResetHotkeyListener);
 		hooks.registerRenderableDrawListener(drawListener);
@@ -229,6 +237,7 @@ public class TobUtilitiesPlugin extends Plugin
 		overlayManager.remove(nylocasOverlay);
 		nylocasHandler.shutDown();
 		maidenHandler.shutDown();
+		verzikHandler.shutDown();
 		keyManager.unregisterKeyListener(hideVerzikHotkeyListener);
 		keyManager.unregisterKeyListener(metronomeResetHotkeyListener);
 		hooks.unregisterRenderableDrawListener(drawListener);

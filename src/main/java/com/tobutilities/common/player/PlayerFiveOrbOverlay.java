@@ -1,6 +1,7 @@
 package com.tobutilities.common.player;
 
 import com.tobutilities.TobUtilitiesConfig;
+import com.tobutilities.verzik.DawnbringerStatus;
 import com.tobutilities.verzik.VerzikHandler;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -31,7 +32,7 @@ public class PlayerFiveOrbOverlay extends Overlay implements PlayerOrb
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Color overlayColor = config.dawnbringerOverlayColor();
+		Color overlayColor = getOverlayColor(verzikHandler, config);
 		if (!TobPlayerOrb.PLAYER_5.equals(verzikHandler.getTobPlayerOrb()))
 		{
 			return null;
