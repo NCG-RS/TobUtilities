@@ -12,7 +12,7 @@ import net.runelite.client.party.messages.PartyMessage;
 public class DawnbringerStatusMessage extends PartyMessage
 {
 	String playerName;
-	boolean hasDawnbringer;
+	DawnbringerStatus dawnbringerStatus;
 
 
 }

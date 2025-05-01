@@ -3,7 +3,6 @@ package com.tobutilities.verzik;
 import com.tobutilities.common.RoomHandler;
 
 
-import com.tobutilities.common.player.PlayerOrb;
 import com.tobutilities.common.player.TobPlayerOrb;
 import com.tobutilities.TobUtilitiesPlugin;
 import com.tobutilities.TobUtilitiesConfig;
@@ -12,14 +11,12 @@ import static com.tobutilities.verzik.VerzikConstants.VERZIK_NAME;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
@@ -32,10 +29,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import static net.runelite.api.kit.KitType.WEAPON;
 
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
-import net.runelite.client.party.WSClient;
-import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -50,17 +44,12 @@ public class VerzikHandler extends RoomHandler
 	private DawnbringerStatus dawnbringerStatus = DawnbringerStatus.UNKNOWN;
 	private boolean isVerzikHidden = false;
 
-	private static final int DAWNBRINGER_ID = ItemID.BRONZE_AXE;
-
 	@Inject
 	private PartyService partyService;
-	@Inject
-	private WSClient wsClient;
 
 
-	// Track which party members have Dawnbringer
-	private final Map<String, Boolean> memberDawnbringerStatus = new HashMap<>();
-
+	// Tracks Dawnbringer status of all party members
+	private final Map<String, DawnbringerStatus> memberDawnbringerStatus = new HashMap<>();
 
 
 	@Inject
@@ -73,23 +62,22 @@ public class VerzikHandler extends RoomHandler
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (!config.enableDawnbringerOverlay()) {
+		if (!config.enableDawnbringerOverlay())
+		{
 			return;
 		}
 
-		if (config.enableDawnbringerParty()) {
-			handleUnequippedDawnBringer();
-
-			// Only check equipped items if Dawnbringer wasn't found in inventory
-			if (TobPlayerOrb.UNKNOWN.equals(tobPlayerOrb)) {
-				handleEquippedDawnBringer();
-			}
-		} else {
-			handleEquippedDawnBringer();
+		if (config.enableDawnbringerParty())
+		{
+			handlePartyDawnbringerOverlay();
+		}
+		else
+		{
+			handleNonPartyDawnbringerOverlay();
 		}
 	}
 
-	private void handleEquippedDawnBringer()
+	private void handleNonPartyDawnbringerOverlay()
 	{
 		String dawnbringerHolderName = removeNonAlphanumeric(getDawnbringerHolderName());
 		if (dawnbringerHolderName != null)
@@ -97,7 +85,7 @@ public class VerzikHandler extends RoomHandler
 			for (TobPlayerOrb tobPlayer : TobPlayerOrb.values())
 			{
 				String playerName = removeNonAlphanumeric(client.getVarcStrValue(tobPlayer.getNameVarc()));
-				if (playerName.equals(dawnbringerHolderName))
+				if (dawnbringerHolderName.equals(playerName))
 				{
 					tobPlayerOrb = tobPlayer;
 					dawnbringerStatus = DawnbringerStatus.EQUIPPED;
@@ -108,24 +96,31 @@ public class VerzikHandler extends RoomHandler
 		tobPlayerOrb = TobPlayerOrb.UNKNOWN;
 	}
 
-	private void handleUnequippedDawnBringer()
+	private void handlePartyDawnbringerOverlay()
 	{
-		String dawnbringerHolderName = removeNonAlphanumeric(getPlayerWithDawnbringer());
+		Map.Entry<String, DawnbringerStatus> playerStatusEntry = getPlayerWithDawnbringerInParty();
+		if (playerStatusEntry == null)
+		{
+			tobPlayerOrb = TobPlayerOrb.UNKNOWN;
+			dawnbringerStatus = DawnbringerStatus.UNKNOWN;
+			return;
+		}
+		String dawnbringerHolderName = removeNonAlphanumeric(playerStatusEntry.getKey());
 		if (dawnbringerHolderName != null)
 		{
 			for (TobPlayerOrb tobPlayer : TobPlayerOrb.values())
 			{
 				String playerName = removeNonAlphanumeric(client.getVarcStrValue(tobPlayer.getNameVarc()));
-				if (playerName.equals(dawnbringerHolderName))
+				if (dawnbringerHolderName.equals(playerName))
 				{
 					tobPlayerOrb = tobPlayer;
-					dawnbringerStatus = DawnbringerStatus.IN_INVENTORY;
+					dawnbringerStatus = playerStatusEntry.getValue();
 					return;
 				}
 			}
 		}
 
-		handleEquippedDawnBringer();
+		handleNonPartyDawnbringerOverlay();
 	}
 
 
@@ -162,10 +157,10 @@ public class VerzikHandler extends RoomHandler
 	public void keyPressed(KeyEvent e)
 	{
 		if (config.hideVerzikHotkey().matches(e) && config.enableHideVerzik())
-			{
-				isVerzikHidden = !isVerzikHidden;
-				e.consume();
-			}
+		{
+			isVerzikHidden = !isVerzikHidden;
+			e.consume();
+		}
 
 	}
 
@@ -185,43 +180,25 @@ public class VerzikHandler extends RoomHandler
 	 * @return The name of the player with Dawnbringer, or null if no one has it
 	 */
 	@Nullable
-	public String getPlayerWithDawnbringer()
+	public Map.Entry<String, DawnbringerStatus> getPlayerWithDawnbringerInParty()
 	{
 		return memberDawnbringerStatus.entrySet().stream()
-			.filter(Map.Entry::getValue)
+			.filter(entry -> entry.getValue() != DawnbringerStatus.UNKNOWN)
 			.findFirst()
-			.map(Map.Entry::getKey).orElse(null);
-	}
-
-
-
-	public void startUp()
-	{
-		wsClient.registerMessage(DawnbringerStatusMessage.class);
-		// Clear status map
-		memberDawnbringerStatus.clear();
-		// Send initial inventory state
-		checkInventoryForDawnbringer();
-	}
-
-
-	public void shutDown()
-	{
-		memberDawnbringerStatus.clear();
+			.orElse(null);
 	}
 
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		log.info("ITEM CONTAINER CHANGED");
 		// Only check inventory changes
 		if (event.getContainerId() == InventoryID.INVENTORY.getId())
 		{
-			checkInventoryForDawnbringer();
+			checkLocalPlayerForDawnbringer();
 		}
 	}
 
-	private void checkInventoryForDawnbringer()
+	private void checkLocalPlayerForDawnbringer()
 	{
 		// Make sure we're in a party
 		if (!partyService.isInParty())
@@ -230,22 +207,25 @@ public class VerzikHandler extends RoomHandler
 		}
 
 		// Check if we have Dawnbringer in inventory
-		boolean hasDawnbringer = false;
-		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-
-		if (inventory != null)
-		{
-			hasDawnbringer = inventory.contains(DAWNBRINGER_ID);
-			if (hasDawnbringer){
-				log.info("Dawnbringer in local players inventory, sending info to party");
-			}
-		}
+		DawnbringerStatus status = DawnbringerStatus.UNKNOWN;
 		String localPlayerName = client.getLocalPlayer().getName();
+		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		ItemContainer equippedItems = client.getItemContainer(InventoryID.EQUIPMENT);
+		if (inventory != null && inventory.contains(ItemID.DAWNBRINGER))
+		{
+			log.info("Dawnbringer in local players inventory, sending info to party");
+			status = DawnbringerStatus.IN_INVENTORY;
+		}
+		else if (equippedItems != null && equippedItems.contains(ItemID.DAWNBRINGER))
+		{
+			log.info("Dawnbringer equipped by local player, sending info to party");
+			status = DawnbringerStatus.EQUIPPED;
+		}
 		// Store our status
-		memberDawnbringerStatus.put(localPlayerName, hasDawnbringer);
+		memberDawnbringerStatus.put(localPlayerName, status);
 
 		// Send status to party
-		partyService.send(new DawnbringerStatusMessage(localPlayerName, hasDawnbringer));
+		partyService.send(new DawnbringerStatusMessage(localPlayerName, status));
 
 	}
 
@@ -261,8 +241,19 @@ public class VerzikHandler extends RoomHandler
 			return;
 		}
 		// Update status map
-		memberDawnbringerStatus.put(message.getPlayerName(), message.isHasDawnbringer());
+		memberDawnbringerStatus.put(message.getPlayerName(), message.getDawnbringerStatus());
 	}
 
+	public void startUp()
+	{
+		memberDawnbringerStatus.clear();
+		checkLocalPlayerForDawnbringer();
+	}
+
+
+	public void shutDown()
+	{
+		memberDawnbringerStatus.clear();
+	}
 
 }

@@ -15,6 +15,7 @@ import com.tobutilities.common.player.PlayerFourOrbOverlay;
 import com.tobutilities.common.player.PlayerFiveOrbOverlay;
 import com.tobutilities.nylocas.NylocasHandler;
 import com.tobutilities.nylocas.NylocasOverlay;
+import com.tobutilities.verzik.DawnbringerStatusMessage;
 import com.tobutilities.verzik.VerzikHandler;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ import net.runelite.client.callback.Hooks;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.party.WSClient;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -80,6 +82,9 @@ public class TobUtilitiesPlugin extends Plugin
 	private VerzikHandler verzikHandler;
 	@Inject
 	private MetronomeService metronomeService;
+	@Inject
+	private WSClient wsClient;
+
 
 	public Region region = Region.UNKNOWN;
 	private final Hooks.RenderableDrawListener drawListener = this::shouldDraw;
@@ -93,15 +98,14 @@ public class TobUtilitiesPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		verzikHandler.onGameTick(tick);
-//		if (region.equals(Region.VERZIK))
-//		{
-//			verzikHandler.onGameTick(tick);
-//		}
-//		else if (region.equals(Region.BLOAT))
-//		{
-//			bloatHandler.onGameTick(tick);
-//		}
+		if (region.equals(Region.VERZIK))
+		{
+			verzikHandler.onGameTick(tick);
+		}
+		else if (region.equals(Region.BLOAT))
+		{
+			bloatHandler.onGameTick(tick);
+		}
 		metronomeService.onGameTick(tick);
 	}
 
@@ -202,6 +206,12 @@ public class TobUtilitiesPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onDawnbringerStatusMessage(DawnbringerStatusMessage message)
+	{
+		verzikHandler.onDawnbringerStatusMessage(message);
+	}
+
+	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		verzikHandler.onItemContainerChanged(event);
@@ -219,6 +229,7 @@ public class TobUtilitiesPlugin extends Plugin
 		overlayManager.add(maidenOverlay);
 		overlayManager.add(nylocasOverlay);
 		verzikHandler.startUp();
+		wsClient.registerMessage(DawnbringerStatusMessage.class);
 		keyManager.registerKeyListener(hideVerzikHotkeyListener);
 		keyManager.registerKeyListener(metronomeResetHotkeyListener);
 		hooks.registerRenderableDrawListener(drawListener);
@@ -238,6 +249,7 @@ public class TobUtilitiesPlugin extends Plugin
 		nylocasHandler.shutDown();
 		maidenHandler.shutDown();
 		verzikHandler.shutDown();
+		wsClient.unregisterMessage(DawnbringerStatusMessage.class);
 		keyManager.unregisterKeyListener(hideVerzikHotkeyListener);
 		keyManager.unregisterKeyListener(metronomeResetHotkeyListener);
 		hooks.unregisterRenderableDrawListener(drawListener);

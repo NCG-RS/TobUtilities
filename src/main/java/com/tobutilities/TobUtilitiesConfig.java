@@ -378,7 +378,7 @@ public interface TobUtilitiesConfig extends Config
 
 	@ConfigItem(
 		keyName = "dawnbringerEquippedOverlayColor",
-		name = "Dawnbringer Equipped overlay color",
+		name = "Dawnbringer equipped overlay color",
 		description = "Color for dawnbringer holders orb",
 		position = 5,
 		section = Verzik
@@ -388,15 +388,15 @@ public interface TobUtilitiesConfig extends Config
 		return new Color(0, 82, 87);
 	}
 	@ConfigItem(
-		keyName = "dawnbringerOverlayColor",
-		name = "Dawnbringer overlay color",
-		description = "Color for orb of player with dawnbringer in inventory",
+		keyName = "dawnbringerInventoryOverlayColor",
+		name = "Dawnbringer inventory overlay color",
+		description = "Color for orb of player with dawnbringer in inventory (Party required_",
 		position = 6,
 		section = Verzik
 	)
 	default Color dawnbringerInventoryOverlayColor()
 	{
-		return new Color(78, 0, 87);
+		return new Color(0, 82, 87);
 	}
 
 
