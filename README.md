@@ -18,7 +18,8 @@ The primary goal of this plugin is to minimize the need for mid-raid configurati
 
 ### Verzik
 - The ability to hide verzik with a hotkey 
-- An overlay to indicate which player is holding dawnbringer
+- An overlay to indicate which player is holding dawnbringer. 
+This works with party plugin as well to track if a teammate has it in their inventory
 
 ![dawnoverlay.PNG](dawnoverlay.PNG)
 

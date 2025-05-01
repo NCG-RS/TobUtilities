@@ -364,18 +364,41 @@ public interface TobUtilitiesConfig extends Config
 	{
 		return true;
 	}
-
 	@ConfigItem(
-		keyName = "dawnbringerOverlayColor",
-		name = "Dawnbringer overlay color",
-		description = "Color for dawnbringer holders orb",
-		position = 4,
+		keyName = "enableDawnbringerParty",
+		name = "Enable dawnbringer party integration ",
+		description = "Checks if dawnbringer is  in a teammates inventory - Requires party plugin ",
+		position = 3,
 		section = Verzik
 	)
-	default Color dawnbringerOverlayColor()
+	default boolean enableDawnbringerParty()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "dawnbringerEquippedOverlayColor",
+		name = "Dawnbringer equipped overlay color",
+		description = "Color for dawnbringer holders orb",
+		position = 5,
+		section = Verzik
+	)
+	default Color dawnbringerEquippedOverlayColor()
 	{
 		return new Color(0, 82, 87);
 	}
+	@ConfigItem(
+		keyName = "dawnbringerInventoryOverlayColor",
+		name = "Dawnbringer inventory overlay color",
+		description = "Color for orb of player with dawnbringer in inventory (Party required_",
+		position = 6,
+		section = Verzik
+	)
+	default Color dawnbringerInventoryOverlayColor()
+	{
+		return new Color(0, 82, 87);
+	}
+
 
 }
 
