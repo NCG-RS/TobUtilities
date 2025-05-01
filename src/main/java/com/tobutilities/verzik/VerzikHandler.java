@@ -18,9 +18,9 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Renderable;
@@ -135,7 +135,7 @@ public class VerzikHandler extends RoomHandler
 				continue; // Skip null or invalid players
 			}
 			int weaponId = player.getPlayerComposition().getEquipmentId(WEAPON);
-			if (weaponId == ItemID.DAWNBRINGER)
+			if (weaponId == ItemID.VERZIK_SPECIAL_WEAPON)
 			{
 				return player.getName(); // Stop once we find a match
 			}
@@ -192,7 +192,7 @@ public class VerzikHandler extends RoomHandler
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		// Only check inventory changes
-		if (event.getContainerId() == InventoryID.INVENTORY.getId())
+		if (event.getContainerId() == InventoryID.INV || event.getContainerId() == InventoryID.WORN)
 		{
 			checkLocalPlayerForDawnbringer();
 		}
@@ -209,16 +209,14 @@ public class VerzikHandler extends RoomHandler
 		// Check if we have Dawnbringer in inventory
 		DawnbringerStatus status = DawnbringerStatus.UNKNOWN;
 		String localPlayerName = client.getLocalPlayer().getName();
-		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-		ItemContainer equippedItems = client.getItemContainer(InventoryID.EQUIPMENT);
-		if (inventory != null && inventory.contains(ItemID.DAWNBRINGER))
+		ItemContainer inventory = client.getItemContainer(InventoryID.INV);
+		ItemContainer equippedItems = client.getItemContainer(InventoryID.WORN);
+		if (inventory != null && inventory.contains(ItemID.VERZIK_SPECIAL_WEAPON))
 		{
-			log.info("Dawnbringer in local players inventory, sending info to party");
 			status = DawnbringerStatus.IN_INVENTORY;
 		}
-		else if (equippedItems != null && equippedItems.contains(ItemID.DAWNBRINGER))
+		else if (equippedItems != null && equippedItems.contains(ItemID.VERZIK_SPECIAL_WEAPON))
 		{
-			log.info("Dawnbringer equipped by local player, sending info to party");
 			status = DawnbringerStatus.EQUIPPED;
 		}
 		// Store our status
@@ -238,6 +236,7 @@ public class VerzikHandler extends RoomHandler
 		log.info("Message received: {}", message);
 		if (client.getLocalPlayer() != null && StringUtils.isNotBlank(client.getLocalPlayer().getName()) && client.getLocalPlayer().getName().equals(message.getPlayerName()))
 		{
+			//ignore messages sent by local player
 			return;
 		}
 		// Update status map
