@@ -75,21 +75,9 @@ public interface TobUtilitiesConfig extends Config
 		return Color.CYAN;
 	}
 
+
 	@ConfigItem(
 		position = 6,
-		keyName = "metronomeBorderWidth",
-		name = "MetronomeBorderWidth",
-		description = "Configures the width of the colored metronome border",
-		section = Metronome
-	)
-	default int metronomeBorderWidth()
-	{
-		return 2;
-	}
-
-
-	@ConfigItem(
-		position = 7,
 		keyName = "fontType",
 		name = "Font Type",
 		description = "Change the font of the Tick Number",
@@ -102,7 +90,7 @@ public interface TobUtilitiesConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 8,
+		position = 7,
 		keyName = "tick1Color",
 		name = "1st Tick Color",
 		description = "Configures the color of 1st tick",
@@ -115,7 +103,7 @@ public interface TobUtilitiesConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 9,
+		position = 8,
 		keyName = "tick2Color",
 		name = "2nd Tick Color",
 		description = "Configures the color of 2nd tick",
@@ -128,7 +116,7 @@ public interface TobUtilitiesConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 10,
+		position = 9,
 		keyName = "tick3Color",
 		name = "3rd Tick Color",
 		description = "Configures the color of 3rd tick if enabled",
@@ -141,7 +129,7 @@ public interface TobUtilitiesConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 11,
+		position = 10,
 		keyName = "tick4Color",
 		name = "4th Tick Color",
 		description = "Configures the color of the 4rd tick if enabled",
@@ -154,7 +142,7 @@ public interface TobUtilitiesConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 12,
+		position = 11,
 		keyName = "tick5Color",
 		name = "5th Tick Color",
 		description = "Configures the color of the 5th tick if enabled",
@@ -167,7 +155,7 @@ public interface TobUtilitiesConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 13,
+		position = 12,
 		keyName = "tick6Color",
 		name = "6th Tick Color",
 		description = "Configures the color of the 6th tick if enabled",
@@ -180,7 +168,7 @@ public interface TobUtilitiesConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 14,
+		position = 13,
 		keyName = "tick7Color",
 		name = "7th Tick Color",
 		description = "Configures the color of the 7th tick if enabled",
@@ -192,7 +180,7 @@ public interface TobUtilitiesConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 14,
 		keyName = "metronomeResetHotkey ",
 		name = "Metronome Reset Hotkey",
 		description = "Hotkey to reset metronome",

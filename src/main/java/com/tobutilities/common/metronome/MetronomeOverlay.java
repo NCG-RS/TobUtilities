@@ -46,26 +46,20 @@ public class MetronomeOverlay extends Overlay
 		if (metronomeService.isMetronomeDisplayed() && metronomeService.isCurrentRegionMetronomeEnabled())
 		{
 			// Background
-			graphics.setColor(new Color(0, 0, 0, 155)); // Semi-transparent black
-			graphics.fillRect(0, 0, preferredSize.width, preferredSize.height);
-
-			// Draw border
 			graphics.setColor(metronomeService.getCurrentColor());
-			graphics.setStroke(new BasicStroke(config.metronomeBorderWidth()));
-			graphics.drawRect(0, 0, preferredSize.width - 1, preferredSize.height - 1);
+			graphics.fillRect(0, 0, preferredSize.width, preferredSize.height);
 
 
 			TITLE_PADDING = (Math.min(preferredSize.width, preferredSize.height) / 2 - 4);
-
 			if (config.fontType() == FontType.REGULAR)
 			{
 				graphics.setFont(new Font(FontManager.getRunescapeFont().getName(), Font.BOLD,
-					Math.min(preferredSize.width, preferredSize.height) / 2));
+					Math.min(preferredSize.width, preferredSize.height)));
 			}
 			else
 			{
 				graphics.setFont(new Font(config.fontType().toString(), Font.BOLD,
-					Math.min(preferredSize.width, preferredSize.height) / 2));
+					Math.min(preferredSize.width, preferredSize.height)));
 			}
 
 			String tickText = String.valueOf(metronomeService.getCurrentColorIndex());
@@ -77,10 +71,6 @@ public class MetronomeOverlay extends Overlay
 				preferredSize.height / 2 + fm.getAscent() / 2
 			);
 
-			// Draw text with a subtle shadow for better visibility
-			OverlayUtil.renderTextLocation(graphics,
-				new Point(tickCounterPoint.getX() + 1, tickCounterPoint.getY() + 1),
-				tickText, Color.BLACK);
 			OverlayUtil.renderTextLocation(graphics, tickCounterPoint, tickText, config.NumberColor());
 		}
 		return preferredSize;

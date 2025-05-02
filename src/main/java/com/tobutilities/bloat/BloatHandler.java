@@ -26,10 +26,13 @@ public class BloatHandler extends RoomHandler
 		super(plugin, config, client);
 	}
 
-	public boolean shouldDraw(Renderable renderable)
+	public boolean shouldDraw(Renderable renderable, boolean drawingUi)
 	{
 		if (renderable instanceof Player && isBloatAlive)
 		{
+			if (drawingUi){
+				return true;
+			}
 			Player player = (Player) renderable;
 			if (player.equals(client.getLocalPlayer()))
 			{
