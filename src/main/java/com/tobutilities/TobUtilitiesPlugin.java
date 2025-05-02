@@ -163,7 +163,7 @@ public class TobUtilitiesPlugin extends Plugin
 	{
 		if (Region.BLOAT.equals(region))
 		{
-			return bloatHandler.shouldDraw(renderable);
+			return bloatHandler.shouldDraw(renderable, drawingUI);
 		}
 
 		if (Region.VERZIK.equals(region))
