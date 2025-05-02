@@ -24,7 +24,7 @@ This works with party plugin as well to track if a teammate has it in their inve
 ![dawnoverlay.PNG](dawnoverlay.PNG)
 
 ### Metronome
-- A visual metronome which changes tick count based on room
+- A visual metronome which changes tick count based on room. This does not sync to the instance timer/timing of game mechanics but can be used to avoid mid raid configuration changes for visual metronome users
 
 Special thanks to Vincent0955 who created the original visual metronome
 

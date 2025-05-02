@@ -6,6 +6,7 @@ import com.tobutilities.common.enums.Region;
 import static com.tobutilities.common.util.CommonUtils.getRegionByRegionId;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
@@ -32,8 +33,6 @@ public class MetronomeService
 	@Inject
 	private TobUtilitiesConfig config;
 
-	private int tickCounter = 0;
-
 	@Getter
 	@Setter
 	private boolean metronomeDisplayed = true;
@@ -43,6 +42,7 @@ public class MetronomeService
 	@Getter
 	@Setter
 	private int currentColorIndex = 0;
+	private final Random random = new Random();
 
 
 	@Inject
@@ -71,6 +71,8 @@ public class MetronomeService
 				plugin.region = newTickRegion;
 				if (isCurrentRegionMetronomeEnabled())
 				{
+					//randomize color index to avoid potential instance timer sync for player who starts the instance
+					currentColorIndex = random.nextInt(plugin.region.getTickCount() + 1);
 					//enable metronome if applicable
 					setMetronomeDisplayed(true);
 				}
@@ -93,7 +95,6 @@ public class MetronomeService
 
 		if (getCurrentColorIndex() >= regionTickCount)
 		{
-			tickCounter = 0;
 			setCurrentColorIndex(0);
 		}
 
@@ -124,7 +125,6 @@ public class MetronomeService
 				setCurrentColor(config.getTick7Color());
 				break;
 		}
-		tickCounter++;
 	}
 
 
