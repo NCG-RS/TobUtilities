@@ -47,7 +47,7 @@ Special thanks to Vincent0955 who created the original visual metronome
 - Added the option to receive the scuff warning chat message as an infobox or overlay panel
 - Added an overlay reminding the player to equip their lightbearer for P1 Verzik
 - Added the ability to outline players in bloat room
-- Fixed a bug causing equipped items not to be looked at for dawnbringer overlay while party integration enabled and not in party
+- Fixed a bug where equipped items were not considered for the Dawnbringer overlay when party integration was enabled but the player was not in a party.
 
 
 I can be reached on discord at n_c_g. for any questions/comments/concerns or feature requests
