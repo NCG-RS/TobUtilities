@@ -19,4 +19,6 @@ public class MaidenConstants
 
 	public static final String THE_MAIDEN_OF_SUGADINTI = "The Maiden of Sugadinti";
 	public static final String NYLOCAS_MATOMENOS = "Nylocas Matomenos";
+	public static final int MAIDEN_BOSS_IMAGE = 25748;
+	public static final int OVERLAY_DISPLAY_TICKS = 10;
 }

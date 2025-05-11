@@ -3,11 +3,13 @@ package com.tobutilities;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import com.tobutilities.bloat.BloatHandler;
+import com.tobutilities.bloat.BloatPlayerOverlay;
 import com.tobutilities.common.metronome.MetronomeService;
 import com.tobutilities.common.metronome.MetronomeOverlay;
 import com.tobutilities.common.enums.Region;
 import com.tobutilities.maiden.MaidenHandler;
-import com.tobutilities.maiden.MaidenOverlay;
+import com.tobutilities.maiden.ScuffWarningOverlay;
+import com.tobutilities.maiden.ScuffedNylocasOverlay;
 import com.tobutilities.common.player.PlayerOneOrbOverlay;
 import com.tobutilities.common.player.PlayerTwoOrbOverlay;
 import com.tobutilities.common.player.PlayerThreeOrbOverlay;
@@ -16,6 +18,7 @@ import com.tobutilities.common.player.PlayerFiveOrbOverlay;
 import com.tobutilities.nylocas.NylocasHandler;
 import com.tobutilities.nylocas.NylocasOverlay;
 import com.tobutilities.verzik.DawnbringerStatusMessage;
+import com.tobutilities.verzik.LightbearerWarningOverlay;
 import com.tobutilities.verzik.VerzikHandler;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +33,7 @@ import net.runelite.client.party.WSClient;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.HotkeyListener;
 
 import javax.inject.Inject;
@@ -45,6 +49,8 @@ public class TobUtilitiesPlugin extends Plugin
 {
 	@Inject
 	private OverlayManager overlayManager;
+	@Inject
+	public InfoBoxManager infoBoxManager;
 	@Inject
 	public ConfigManager configManager;
 	@Inject
@@ -62,7 +68,13 @@ public class TobUtilitiesPlugin extends Plugin
 	@Inject
 	private PlayerFiveOrbOverlay playerFiveOrbOverlay;
 	@Inject
-	private MaidenOverlay maidenOverlay;
+	private ScuffedNylocasOverlay scuffedNylocasOverlay;
+	@Inject
+	private ScuffWarningOverlay scuffWarningOverlay;
+	@Inject
+	private BloatPlayerOverlay bloatPlayerOverlay;
+	@Inject
+	private LightbearerWarningOverlay lightbearerWarningOverlay;
 	@Inject
 	private NylocasOverlay nylocasOverlay;
 	@Inject
@@ -98,7 +110,11 @@ public class TobUtilitiesPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (region.equals(Region.VERZIK))
+		if (region.equals(Region.MAIDEN))
+		{
+			maidenHandler.onGameTick(tick);
+		}
+		else if (region.equals(Region.VERZIK))
 		{
 			verzikHandler.onGameTick(tick);
 		}
@@ -226,7 +242,10 @@ public class TobUtilitiesPlugin extends Plugin
 		overlayManager.add(playerThreeOrbOverlay);
 		overlayManager.add(playerFourOrbOverlay);
 		overlayManager.add(playerFiveOrbOverlay);
-		overlayManager.add(maidenOverlay);
+		overlayManager.add(scuffedNylocasOverlay);
+		overlayManager.add(scuffWarningOverlay);
+		overlayManager.add(bloatPlayerOverlay);
+		overlayManager.add(lightbearerWarningOverlay);
 		overlayManager.add(nylocasOverlay);
 		verzikHandler.startUp();
 		wsClient.registerMessage(DawnbringerStatusMessage.class);
@@ -244,7 +263,10 @@ public class TobUtilitiesPlugin extends Plugin
 		overlayManager.remove(playerThreeOrbOverlay);
 		overlayManager.remove(playerFourOrbOverlay);
 		overlayManager.remove(playerFiveOrbOverlay);
-		overlayManager.remove(maidenOverlay);
+		overlayManager.remove(scuffedNylocasOverlay);
+		overlayManager.remove(scuffWarningOverlay);
+		overlayManager.remove(bloatPlayerOverlay);
+		overlayManager.remove(lightbearerWarningOverlay);
 		overlayManager.remove(nylocasOverlay);
 		nylocasHandler.shutDown();
 		maidenHandler.shutDown();

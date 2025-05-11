@@ -1,32 +1,33 @@
-package com.tobutilities.maiden;
+package com.tobutilities.bloat;
 
 import com.tobutilities.TobUtilitiesConfig;
+import com.tobutilities.TobUtilitiesPlugin;
+import com.tobutilities.common.enums.Region;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.Player;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 
-public class MaidenOverlay extends Overlay
+public class BloatPlayerOverlay extends Overlay
 {
 	private final Client client;
-	private final MaidenHandler maidenHandler;
 	private final TobUtilitiesConfig config;
 	private final ModelOutlineRenderer modelOutlineRenderer;
+	private final TobUtilitiesPlugin plugin;
 
 	@Inject
-	private MaidenOverlay(Client client, MaidenHandler maidenHandler, TobUtilitiesConfig config, ModelOutlineRenderer modelOutlineRenderer)
+	private BloatPlayerOverlay(Client client, TobUtilitiesConfig config, ModelOutlineRenderer modelOutlineRenderer, TobUtilitiesPlugin plugin)
 	{
 		this.client = client;
-		this.maidenHandler = maidenHandler;
 		this.config = config;
 		this.modelOutlineRenderer = modelOutlineRenderer;
+		this.plugin = plugin;
 
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -35,25 +36,20 @@ public class MaidenOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		// First, set up the outlines for rendering
-		for (NPC npc : maidenHandler.getNylocasMatomenosSpawns())
+		if (Region.BLOAT.equals(plugin.region) && config.enableOutlinePlayers())
 		{
-			if (npc == null || npc.isDead())
+			for (Player player : client.getWorldView(-1).players())
 			{
-				continue;
+				if (player == null || player.isDead())
+				{
+					continue;
+				}
+
+				Color highlight = config.getHighlightColor();
+				modelOutlineRenderer.drawOutline(player, config.getBorderWidth(), highlight, 1);
+
 			}
-
-			NPCComposition npcComposition = npc.getTransformedComposition();
-			if (npcComposition == null)
-			{
-				continue;
-			}
-
-			Color highlight = config.getHighlightColor();
-			modelOutlineRenderer.drawOutline(npc, config.getBorderWidth(), highlight, config.getBorderFeather());
-
 		}
-
 		return null;
 	}
 }
