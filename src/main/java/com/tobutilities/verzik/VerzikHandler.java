@@ -8,6 +8,7 @@ import com.tobutilities.TobUtilitiesPlugin;
 import com.tobutilities.TobUtilitiesConfig;
 
 import static com.tobutilities.verzik.VerzikConstants.VERZIK_NAME;
+import static com.tobutilities.verzik.VerzikConstants.VERZIK_P1_IDS;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +44,8 @@ public class VerzikHandler extends RoomHandler
 	@Getter
 	private DawnbringerStatus dawnbringerStatus = DawnbringerStatus.UNKNOWN;
 	private boolean isVerzikHidden = false;
+	@Getter
+	private boolean isLightbearerOverlayDisplayed = false;
 
 	@Inject
 	private PartyService partyService;
@@ -62,12 +65,13 @@ public class VerzikHandler extends RoomHandler
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
+		isLightbearerOverlayDisplayed = shouldDisplayLightbearerReminder();
 		if (!config.enableDawnbringerOverlay())
 		{
 			return;
 		}
 
-		if (config.enableDawnbringerParty())
+		if (config.enableDawnbringerParty() && partyService.isInParty())
 		{
 			handlePartyDawnbringerOverlay();
 		}
@@ -233,7 +237,7 @@ public class VerzikHandler extends RoomHandler
 	@Subscribe
 	public void onDawnbringerStatusMessage(DawnbringerStatusMessage message)
 	{
-		log.info("Message received: {}", message);
+		log.debug("Message received: {}", message);
 		if (client.getLocalPlayer() != null && StringUtils.isNotBlank(client.getLocalPlayer().getName()) && client.getLocalPlayer().getName().equals(message.getPlayerName()))
 		{
 			//ignore messages sent by local player
@@ -241,6 +245,24 @@ public class VerzikHandler extends RoomHandler
 		}
 		// Update status map
 		memberDawnbringerStatus.put(message.getPlayerName(), message.getDawnbringerStatus());
+	}
+
+	private boolean shouldDisplayLightbearerReminder()
+	{
+		return config.enableLightbearerOverlay() && isP1VerzikAlive() && isLightbearerInInventory();
+	}
+
+	private boolean isP1VerzikAlive()
+	{
+		return client.getWorldView(-1).npcs()
+			.stream()
+			.anyMatch(npc -> VERZIK_P1_IDS.contains(npc.getId()) && !npc.isDead());
+	}
+
+	private boolean isLightbearerInInventory()
+	{
+		ItemContainer inventory = client.getItemContainer(InventoryID.INV);
+		return inventory != null && inventory.contains(ItemID.LIGHTBEARER);
 	}
 
 	public void startUp()

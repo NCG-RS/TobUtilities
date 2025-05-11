@@ -1,6 +1,7 @@
 package com.tobutilities;
 
 import com.tobutilities.common.enums.FontType;
+import com.tobutilities.maiden.ScuffWarningDisplay;
 import net.runelite.client.config.*;
 
 import java.awt.*;
@@ -202,12 +203,12 @@ public interface TobUtilitiesConfig extends Config
 		position = 0,
 		keyName = "maidenScuffWarning",
 		name = "Maiden Scuff Warning",
-		description = "Sends a message with Maidens index, lets you know if you should expect scuffed nylos",
+		description = "Provides Maidens index, lets you know if you should expect scuffed nylos",
 		section = Maiden
 	)
-	default boolean enableMaidenIndexMessage()
+	default ScuffWarningDisplay scuffWarningDisplayType()
 	{
-		return true;
+		return ScuffWarningDisplay.CHAT_MESSAGE;
 	}
 
 	@ConfigItem(
@@ -286,6 +287,18 @@ public interface TobUtilitiesConfig extends Config
 		section = Bloat
 	)
 	default boolean hideOtherPlayersDuringBloat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "outlinePlayers",
+		name = "Outline players",
+		description = "Enable outlining players ",
+		position = 3,
+		section = Bloat
+	)
+	default boolean enableOutlinePlayers()
 	{
 		return false;
 	}
@@ -378,13 +391,37 @@ public interface TobUtilitiesConfig extends Config
 	@ConfigItem(
 		keyName = "dawnbringerInventoryOverlayColor",
 		name = "Dawnbringer inventory overlay color",
-		description = "Color for orb of player with dawnbringer in inventory (Party required_",
+		description = "Color for orb of player with dawnbringer in inventory (Party required)",
 		position = 6,
 		section = Verzik
 	)
 	default Color dawnbringerInventoryOverlayColor()
 	{
 		return new Color(0, 82, 87);
+	}
+
+	@ConfigItem(
+		keyName = "enableLightbearerOverlay",
+		name = "Enable lightbearer overlay ",
+		description = "Reminds player to equip their lightbearer for P1",
+		position = 7,
+		section = Verzik
+	)
+	default boolean enableLightbearerOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "lightbearerOverlayColor",
+		name = "Lightbearer overlay color",
+		description = "Color for lightbearer reminder overlay",
+		position = 8,
+		section = Verzik
+	)
+	default Color lightbearerOverlayColor()
+	{
+		return new Color(89, 0, 0);
 	}
 
 
