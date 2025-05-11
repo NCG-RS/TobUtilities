@@ -135,7 +135,6 @@ public class VerzikHandler extends RoomHandler
 		{
 			if (player == null || player.getName() == null)
 			{
-				log.info("Invalid/Null player");
 				continue; // Skip null or invalid players
 			}
 			int weaponId = player.getPlayerComposition().getEquipmentId(WEAPON);
