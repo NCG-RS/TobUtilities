@@ -55,7 +55,7 @@ public interface TobUtilitiesConfig extends Config
 	@ConfigItem(
 		position = 4,
 		keyName = "enableVerzikMetronome",
-		name = "Enable Verik Metronome",
+		name = "Enable Verzik Metronome",
 		description = "Enable visual metronome in Verzik room",
 		section = Metronome
 	)
@@ -383,7 +383,7 @@ public interface TobUtilitiesConfig extends Config
 	@ConfigItem(
 		keyName = "hideVerzikHotkey",
 		name = "Hide Verzik Hotkey",
-		description = "Key to hide verzik ",
+		description = "Key to hide Verzik ",
 		position = 2,
 		section = Verzik
 	)
