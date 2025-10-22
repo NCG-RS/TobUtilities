@@ -28,6 +28,7 @@ import net.runelite.api.events.*;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.party.WSClient;
 import net.runelite.client.plugins.Plugin;
@@ -233,6 +234,26 @@ public class TobUtilitiesPlugin extends Plugin
 		verzikHandler.onItemContainerChanged(event);
 	}
 
+    @Subscribe (priority = -1.0f)
+    public void onBeforeRender(BeforeRender r)
+    {
+        if (region.equals(Region.BLOAT)) {
+            bloatHandler.onBeforeRender(r);
+        }
+    }
+
+    @Subscribe
+    public void onConfigChanged(ConfigChanged event)
+    {
+        bloatHandler.onConfigChanged(event);
+    }
+
+    @Subscribe
+    public void onGameStateChanged(GameStateChanged event)
+    {
+        bloatHandler.onGameStateChanged(event);
+    }
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -247,6 +268,7 @@ public class TobUtilitiesPlugin extends Plugin
 		overlayManager.add(bloatPlayerOverlay);
 		overlayManager.add(lightbearerWarningOverlay);
 		overlayManager.add(nylocasOverlay);
+        bloatHandler.startUp();
 		verzikHandler.startUp();
 		wsClient.registerMessage(DawnbringerStatusMessage.class);
 		keyManager.registerKeyListener(hideVerzikHotkeyListener);
@@ -270,6 +292,7 @@ public class TobUtilitiesPlugin extends Plugin
 		overlayManager.remove(nylocasOverlay);
 		nylocasHandler.shutDown();
 		maidenHandler.shutDown();
+        bloatHandler.shutDown();
 		verzikHandler.shutDown();
 		wsClient.unregisterMessage(DawnbringerStatusMessage.class);
 		keyManager.unregisterKeyListener(hideVerzikHotkeyListener);

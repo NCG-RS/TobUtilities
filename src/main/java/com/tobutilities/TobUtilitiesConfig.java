@@ -303,6 +303,44 @@ public interface TobUtilitiesConfig extends Config
 		return false;
 	}
 
+    @ConfigItem(
+            keyName = "hideBloatFloor",
+            name = "Hide floor",
+            description = "Enable hiding ground objects in the bloat room",
+            position = 4,
+            section = Bloat
+    )
+    default boolean hideBloatFloor()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            keyName = "bloatSkyboxOverride",
+            name = "Skybox override",
+            description = "Override the skybox color in the bloat room",
+            position = 5,
+            section = Bloat
+    )
+
+    default boolean enableBloatSkyboxOverride()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            keyName = "bloatSkyboxColor",
+            name = "Skybox color",
+            description = "The color for the skybox in the bloat room",
+            position = 6,
+            section = Bloat
+    )
+
+    default Color bloatSkyboxColor()
+    {
+        return null;
+    }
+
 	@ConfigSection(
 		name = "Nylocas",
 		description = "Change Nylocas settings",
