@@ -111,6 +111,13 @@ public class TobUtilitiesPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
+		Region oldRegion = region;
+        // metronomeService updates region
+		metronomeService.onGameTick(tick);
+		if (oldRegion.equals(Region.BLOAT) && !region.equals(Region.BLOAT))
+		{
+			bloatHandler.onRoomExit();
+		}
 		if (region.equals(Region.MAIDEN))
 		{
 			maidenHandler.onGameTick(tick);
@@ -123,7 +130,6 @@ public class TobUtilitiesPlugin extends Plugin
 		{
 			bloatHandler.onGameTick(tick);
 		}
-		metronomeService.onGameTick(tick);
 	}
 
 

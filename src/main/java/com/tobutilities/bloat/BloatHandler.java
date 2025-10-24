@@ -6,6 +6,8 @@ import com.tobutilities.common.RoomHandler;
 import com.tobutilities.TobUtilitiesPlugin;
 import com.tobutilities.TobUtilitiesConfig;
 import javax.inject.Inject;
+
+import com.tobutilities.common.enums.Region;
 import lombok.extern.slf4j.Slf4j;
 
 import net.runelite.api.*;
@@ -28,6 +30,10 @@ public class BloatHandler extends RoomHandler
     private final Map<LocalPoint, GroundObject> hiddenObjects = new HashMap<>();
     private int bloatSkyboxColor;
     private boolean bloatSkyboxOverride;
+    private boolean hideBloatFloor;
+    private String originalHdSkyColorConfig;
+    private String originalHdSkyConfig;
+    private boolean hdConfigApplied;
 
     @Inject
     private ConfigManager configManager;
@@ -61,36 +67,47 @@ public class BloatHandler extends RoomHandler
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-        boolean foundBloat = false;
 		for (NPC npc : client.getWorldView(-1).npcs())
 		{
 			if (PESTILENT_BLOAT.equals(npc.getName()))
 			{
 				isBloatAlive = !npc.isDead();
-                foundBloat = true;
                 break;
 			}
 		}
-        if (!foundBloat) {
-            isBloatAlive = false;
-        }
+        updateHdConfig();
         updateGroundObjects();
 	}
 
     @Subscribe
     public void onGameStateChanged(GameStateChanged event)
     {
-        if (event.getGameState() == GameState.LOADING && !hiddenObjects.isEmpty())
+        switch (event.getGameState())
         {
-            hiddenObjects.clear();
-            updateGroundObjects();
+            case LOADING:
+                hiddenObjects.clear();
+                break;
+
+            case LOGGED_IN:
+                if (plugin.region == Region.BLOAT)
+                {
+                    updateGroundObjects();
+                    updateHdConfig();
+                }
+                break;
+
+            case LOGIN_SCREEN:
+                hiddenObjects.clear();
+                restoreHdConfig();
+                break;
         }
     }
 
     @Subscribe(priority = -1.0f)
     public void onBeforeRender(BeforeRender r)
     {
-        if (bloatSkyboxOverride && client.getGameState() == GameState.LOGGED_IN) {
+        if (bloatSkyboxOverride && client.getGameState() == GameState.LOGGED_IN)
+        {
             client.setSkyboxColor(bloatSkyboxColor);
         }
     }
@@ -103,11 +120,13 @@ public class BloatHandler extends RoomHandler
             switch (event.getKey())
             {
                 case "hideBloatFloor":
+                    hideBloatFloor = config.hideBloatFloor();
                     updateGroundObjects();
                     break;
 
                 case "bloatSkyboxOverride":
                     bloatSkyboxOverride = config.enableBloatSkyboxOverride();
+                    updateHdConfig();
                     break;
 
                 case "bloatSkyboxColor":
@@ -119,11 +138,11 @@ public class BloatHandler extends RoomHandler
 
     private void updateGroundObjects()
     {
-        if (config.hideBloatFloor() && hiddenObjects.isEmpty())
+        if (hideBloatFloor)
         {
             hideGroundObjects();
         }
-        else if (!config.hideBloatFloor() && !hiddenObjects.isEmpty())
+        else
         {
             unhideGroundObjects();
         }
@@ -216,18 +235,75 @@ public class BloatHandler extends RoomHandler
         return tiles[sceneX][sceneY];
     }
 
+    private void updateHdConfig() {
+        if (bloatSkyboxOverride && !hdConfigApplied)
+        {
+            overrideHdConfig();
+        }
+        else if (!bloatSkyboxOverride && hdConfigApplied)
+        {
+            restoreHdConfig();
+        }
+    }
+
+    private void overrideHdConfig() {
+        final String group = "hd";
+        // Save original hd config
+        if (originalHdSkyColorConfig == null)
+        {
+            originalHdSkyColorConfig = configManager.getConfiguration(group, "defaultSkyColor");
+        }
+        if (originalHdSkyConfig == null)
+        {
+            originalHdSkyConfig = configManager.getConfiguration(group, "overrideSky");
+        }
+
+        // Apply temporary overrides
+        configManager.setConfiguration(group, "defaultSkyColor", "RUNELITE");
+        configManager.setConfiguration(group, "overrideSky", "true");
+
+        hdConfigApplied = true;
+        log.debug("Applied 117 HD config overrides for Bloat");
+    }
+
+    private void restoreHdConfig() {
+        final String group = "hd";
+        // Restore original hd config
+        if (originalHdSkyColorConfig != null)
+        {
+            configManager.setConfiguration(group, "defaultSkyColor", originalHdSkyColorConfig);
+        }
+        if (originalHdSkyConfig != null)
+        {
+            configManager.setConfiguration(group, "overrideSky", originalHdSkyConfig);
+        }
+
+        hdConfigApplied = false;
+        originalHdSkyColorConfig = null;
+        originalHdSkyConfig = null;
+        log.debug("Restored original 117 HD config");
+    }
+
+    public void onRoomExit()
+    {
+        restoreHdConfig();
+        unhideGroundObjects();
+    }
+
     public void startUp()
     {
+        hideBloatFloor = config.hideBloatFloor();
         bloatSkyboxColor = config.bloatSkyboxColor().getRGB();
         bloatSkyboxOverride = config.enableBloatSkyboxOverride();
         if (client.getGameState() == GameState.LOGGED_IN)
         {
             updateGroundObjects();
+            updateHdConfig();
         }
     }
 
     public void shutDown()
     {
-        unhideGroundObjects();
+        onRoomExit();
     }
 }
