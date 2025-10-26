@@ -55,7 +55,7 @@ public interface TobUtilitiesConfig extends Config
 	@ConfigItem(
 		position = 4,
 		keyName = "enableVerzikMetronome",
-		name = "Enable Verik Metronome",
+		name = "Enable Verzik Metronome",
 		description = "Enable visual metronome in Verzik room",
 		section = Metronome
 	)
@@ -303,6 +303,44 @@ public interface TobUtilitiesConfig extends Config
 		return false;
 	}
 
+    @ConfigItem(
+            keyName = "hideBloatFloor",
+            name = "Hide floor",
+            description = "Enable hiding ground objects in the bloat room",
+            position = 4,
+            section = Bloat
+    )
+    default boolean hideBloatFloor()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            keyName = "bloatSkyboxOverride",
+            name = "Skybox override",
+            description = "Override the skybox color in the bloat room",
+            position = 5,
+            section = Bloat
+    )
+
+    default boolean enableBloatSkyboxOverride()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            keyName = "bloatSkyboxColor",
+            name = "Skybox color",
+            description = "The color for the skybox in the bloat room",
+            position = 6,
+            section = Bloat
+    )
+
+    default Color bloatSkyboxColor()
+    {
+        return null;
+    }
+
 	@ConfigSection(
 		name = "Nylocas",
 		description = "Change Nylocas settings",
@@ -345,7 +383,7 @@ public interface TobUtilitiesConfig extends Config
 	@ConfigItem(
 		keyName = "hideVerzikHotkey",
 		name = "Hide Verzik Hotkey",
-		description = "Key to hide verzik ",
+		description = "Key to hide Verzik ",
 		position = 2,
 		section = Verzik
 	)
