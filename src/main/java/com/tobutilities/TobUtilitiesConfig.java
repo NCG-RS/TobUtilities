@@ -338,7 +338,7 @@ public interface TobUtilitiesConfig extends Config
 
     default Color bloatSkyboxColor()
     {
-        return null;
+		return new Color(178,150,203);
     }
 
 	@ConfigSection(
