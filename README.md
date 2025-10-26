@@ -12,6 +12,7 @@ The primary goal of this plugin is to minimize the need for mid-raid configurati
 
 ### Bloat
 - The ability to hide self or other players while in bloat room
+- The ability to hide the floor in bloat room with a skybox override (Works with GPU/117)
 
 ### Nylocas
 - Aggressive highlighting
@@ -48,6 +49,9 @@ Special thanks to Vincent0955 who created the original visual metronome
 - Added an overlay reminding the player to equip their lightbearer for P1 Verzik
 - Added the ability to outline players in bloat room
 - Fixed a bug where equipped items were not considered for the Dawnbringer overlay when party integration was enabled but the player was not in a party.
-
+#### 1.0.4
+- Fixed lightbearer overlay not appearing due to new P1 Verzik Ids
+#### 1.0.5
+- Added the option to hide the floor in bloat room with a skybox override
 
 I can be reached on discord at n_c_g. for any questions/comments/concerns or feature requests
