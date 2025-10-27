@@ -3,7 +3,7 @@ package com.tobutilities.common.enums;
 public enum Region
 {
 	MAIDEN(0, 1, 12613),
-	BLOAT(0, 2, 13125),
+	BLOAT(5, 2, 13125),
 	NYLOCAS(4, 3, 13122),
 	SOTETSEG(4, 4, 13123),
 	XARPUS(4, 5, 12612),

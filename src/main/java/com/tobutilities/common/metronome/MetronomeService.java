@@ -131,23 +131,21 @@ public class MetronomeService
 	public boolean isCurrentRegionMetronomeEnabled()
 	{
 		Region region = plugin.region;
-		if (Region.NYLOCAS.equals(region) && config.enableNyloMetronome())
+		switch (region)
 		{
-			return true;
+			case BLOAT:
+				return config.enableBloatMetronome();
+			case NYLOCAS:
+				return config.enableNyloMetronome();
+			case SOTETSEG:
+				return config.enableSoteMetronome();
+			case XARPUS:
+				return config.enableXarpusMetronome();
+			case VERZIK:
+				return config.enableVerzikMetronome();
+			default:
+				return false;
 		}
-		else if (Region.SOTETSEG.equals(region) && config.enableSoteMetronome())
-		{
-			return true;
-		}
-		else if (Region.XARPUS.equals(region) && config.enableXarpusMetronome())
-		{
-			return true;
-		}
-		else if (Region.VERZIK.equals(region) && config.enableVerzikMetronome())
-		{
-			return true;
-		}
-		return false;
 	}
 
 	public void keyPressed(KeyEvent e)
