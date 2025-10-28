@@ -18,7 +18,7 @@ public interface TobUtilitiesConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "enableNylocasMetronome",
+		keyName = "enableBloatMetronome",
 		name = "Enable Bloat Metronome",
 		description = "Enable visual metronome in Bloat room",
 		section = Metronome
