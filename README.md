@@ -54,5 +54,7 @@ Special thanks to Vincent0955 who created the original visual metronome
 #### 1.0.5
 - Added the option to hide the floor in bloat room with a skybox override
 - Added the option for a 5t metronome in bloat room
+#### 1.0.6
+- Fixed a bug which made some users unable to start the plugin
 
 I can be reached on discord at n_c_g. for any questions/comments/concerns or feature requests

@@ -29,6 +29,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import static net.runelite.api.kit.KitType.WEAPON;
 
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.party.PartyService;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +50,8 @@ public class VerzikHandler extends RoomHandler
 
 	@Inject
 	private PartyService partyService;
+	@Inject
+	private ClientThread clientThread;
 
 
 	// Tracks Dawnbringer status of all party members
@@ -197,7 +200,7 @@ public class VerzikHandler extends RoomHandler
 		// Only check inventory changes
 		if (event.getContainerId() == InventoryID.INV || event.getContainerId() == InventoryID.WORN)
 		{
-			checkLocalPlayerForDawnbringer();
+			clientThread.invoke(this::checkLocalPlayerForDawnbringer);
 		}
 	}
 
@@ -267,7 +270,6 @@ public class VerzikHandler extends RoomHandler
 	public void startUp()
 	{
 		memberDawnbringerStatus.clear();
-		checkLocalPlayerForDawnbringer();
 	}
 
 

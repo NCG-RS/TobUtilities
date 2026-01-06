@@ -237,7 +237,9 @@ public class TobUtilitiesPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		verzikHandler.onItemContainerChanged(event);
+		if (Region.VERZIK.equals(region)){
+			verzikHandler.onItemContainerChanged(event);
+		}
 	}
 
     @Subscribe (priority = -1.0f)
