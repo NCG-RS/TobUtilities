@@ -135,6 +135,12 @@ public class BloatHandler extends RoomHandler implements RenderCallback
             {
                 case "hideBloatFloor":
                     hideBloatFloor = config.hideBloatFloor();
+                    clientThread.invokeLater(() -> {
+                        if (client.getGameState() == GameState.LOGGED_IN)
+                        {
+                            client.setGameState(GameState.LOADING);
+                        }
+                    });
                     onRoomEntry();
                     break;
 

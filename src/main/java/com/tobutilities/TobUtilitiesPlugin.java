@@ -293,8 +293,6 @@ public class TobUtilitiesPlugin extends Plugin
     public void onConfigChanged(ConfigChanged event)
     {
         bloatHandler.onConfigChanged(event);
-
-		clientThread.invokeLater(this::tryReloadScene);
 	}
 
     @Subscribe
