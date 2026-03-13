@@ -315,39 +315,26 @@ public interface TobUtilitiesConfig extends Config
 	}
 
     @ConfigItem(
-            keyName = "hideBloatFloor",
-            name = "Hide floor",
+            keyName = "hideBloatGroundObjects",
+            name = "Hide ground objects",
             description = "Enable hiding ground objects in the bloat room",
             position = 4,
             section = Bloat
     )
-    default boolean hideBloatFloor()
+    default boolean hideBloatGroundObjects()
     {
         return false;
     }
 
     @ConfigItem(
-            keyName = "bloatSkyboxOverride",
-            name = "Skybox override",
-            description = "Override the skybox color in the bloat room",
-            position = 5,
-            section = Bloat
-    )
-
-    default boolean enableBloatSkyboxOverride()
-    {
-        return false;
-    }
-
-    @ConfigItem(
-            keyName = "bloatSkyboxColor",
-            name = "Skybox color",
-            description = "The color for the skybox in the bloat room",
+            keyName = "bloatFloorColor",
+            name = "Floor color",
+            description = "The color for the floor in the bloat room",
             position = 6,
             section = Bloat
     )
 
-    default Color bloatSkyboxColor()
+    default Color bloatFloorColor()
     {
 		return new Color(178,150,203);
     }
