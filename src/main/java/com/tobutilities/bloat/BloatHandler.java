@@ -85,7 +85,7 @@ public class BloatHandler extends RoomHandler implements RenderCallback
 
     @Subscribe public void onPreMapLoad(PreMapLoad event)
     {
-        if (!config.hideBloatGroundObjects())
+        if (!config.hideBloatFloor())
         {
             return;
         }
@@ -193,7 +193,7 @@ public class BloatHandler extends RoomHandler implements RenderCallback
         {
             switch (event.getKey())
             {
-                case "hideBloatGroundObjects":
+                case "hideBloatFloor":
                 case "bloatFloorColor":
                     reloadScene();
                     break;

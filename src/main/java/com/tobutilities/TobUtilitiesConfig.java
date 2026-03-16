@@ -315,13 +315,13 @@ public interface TobUtilitiesConfig extends Config
 	}
 
     @ConfigItem(
-            keyName = "hideBloatGroundObjects",
-            name = "Hide ground objects",
+            keyName = "hideBloatFloor",
+            name = "Hide floor",
             description = "Enable hiding ground objects in the bloat room",
             position = 4,
             section = Bloat
     )
-    default boolean hideBloatGroundObjects()
+    default boolean hideBloatFloor()
     {
         return false;
     }
