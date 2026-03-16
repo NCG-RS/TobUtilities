@@ -24,6 +24,7 @@ import java.awt.*;
 @Slf4j
 public class BloatHandler extends RoomHandler implements RenderCallback
 {
+	private static final String configGroup = "tobutilities";
 	private boolean isBloatAlive = false;
 
     // Bloat floor coordinates
@@ -189,7 +190,7 @@ public class BloatHandler extends RoomHandler implements RenderCallback
     @Subscribe
     public void onConfigChanged(ConfigChanged event)
     {
-        if ("tobutilities".equals(event.getGroup()))
+        if (configGroup.equals(event.getGroup()))
         {
             switch (event.getKey())
             {
@@ -216,7 +217,17 @@ public class BloatHandler extends RoomHandler implements RenderCallback
 
     public void onRoomEntry() {}
 
-    public void startUp() {}
+	public void startUp()
+	{
+		// Migrate old skybox color config to new floor color config
+		String oldSkyboxColor = configManager.getConfiguration(configGroup, "bloatSkyboxColor");
+		if (oldSkyboxColor != null)
+		{
+			log.debug("Migrating Bloat floor color config");
+			configManager.setConfiguration(configGroup, "bloatFloorColor", oldSkyboxColor);
+			configManager.unsetConfiguration(configGroup, "bloatSkyboxColor");
+		}
+	}
 
     public void shutDown() {}
 }
