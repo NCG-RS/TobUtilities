@@ -31,7 +31,9 @@ import java.util.Map;
 public class BloatHandler extends RoomHandler implements RenderCallback
 {
 	private boolean isBloatAlive = false;
+	private boolean skyboxSaved = false;
     private int bloatSkyboxColor;
+	private int originalSkyboxColor;
     private boolean bloatSkyboxOverride;
     private boolean hideBloatFloor;
     private String originalHdSkyColorConfig;
@@ -122,6 +124,10 @@ public class BloatHandler extends RoomHandler implements RenderCallback
     {
         if (bloatSkyboxOverride && client.getGameState() == GameState.LOGGED_IN)
         {
+			if(!skyboxSaved){
+				originalSkyboxColor = client.getSkyboxColor();
+				skyboxSaved = true;
+			}
             client.setSkyboxColor(bloatSkyboxColor);
         }
     }
@@ -140,6 +146,12 @@ public class BloatHandler extends RoomHandler implements RenderCallback
 
                 case "bloatSkyboxOverride":
                     bloatSkyboxOverride = config.enableBloatSkyboxOverride();
+					
+					if(!bloatSkyboxOverride && skyboxSaved){
+						client.setSkyboxColor(originalSkyboxColor);
+						skyboxSaved = false;
+						// i turn skybox override on gets changed to the color i want, but when i turn off it doesnt go back to default color osrs has (black)
+					}
                     updateHdConfig();
                     break;
 
