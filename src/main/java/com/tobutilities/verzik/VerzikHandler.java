@@ -1,7 +1,8 @@
 package com.tobutilities.verzik;
 
 import com.tobutilities.common.RoomHandler;
-
+import com.tobutilities.common.enums.Region;
+import com.tobutilities.common.util.CommonUtils;
 
 import com.tobutilities.common.player.TobPlayerOrb;
 import com.tobutilities.TobUtilitiesPlugin;
@@ -19,6 +20,7 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.gameval.ItemID;
@@ -26,6 +28,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Renderable;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import static net.runelite.api.kit.KitType.WEAPON;
 
@@ -40,6 +43,8 @@ import org.apache.commons.lang3.StringUtils;
 public class VerzikHandler extends RoomHandler
 
 {
+	private static final int VERZIK_CAMERA_RESTORE_TICKS = 3;
+
 	@Getter
 	private TobPlayerOrb tobPlayerOrb = TobPlayerOrb.UNKNOWN;
 	@Getter
@@ -47,6 +52,9 @@ public class VerzikHandler extends RoomHandler
 	private boolean isVerzikHidden = false;
 	@Getter
 	private boolean isLightbearerOverlayDisplayed = false;
+	private int savedCameraYawTarget = -1;
+	private int savedCameraPitchTarget = -1;
+	private int cameraRestoreTicksRemaining = 0;
 
 	@Inject
 	private PartyService partyService;
@@ -68,6 +76,7 @@ public class VerzikHandler extends RoomHandler
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
+		restoreSavedCameraTargetsIfNeeded();
 		isLightbearerOverlayDisplayed = shouldDisplayLightbearerReminder();
 		if (!config.enableDawnbringerOverlay())
 		{
@@ -267,15 +276,100 @@ public class VerzikHandler extends RoomHandler
 		return inventory != null && inventory.contains(ItemID.LIGHTBEARER);
 	}
 
+	public void captureEntryCameraTargets()
+	{
+		if (!config.preserveVerzikEntryCamera() || client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		savedCameraYawTarget = client.getCameraYawTarget();
+		savedCameraPitchTarget = client.getCameraPitchTarget();
+	}
+
+	public void onRoomEntry()
+	{
+		if (!config.preserveVerzikEntryCamera())
+		{
+			cameraRestoreTicksRemaining = 0;
+			return;
+		}
+
+		beginCameraRestore();
+		restoreSavedCameraTargetsIfNeeded();
+	}
+
+	public void onRoomExit()
+	{
+		cameraRestoreTicksRemaining = 0;
+	}
+
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			clearCameraSnapshot();
+			return;
+		}
+
+		if (!config.preserveVerzikEntryCamera())
+		{
+			cameraRestoreTicksRemaining = 0;
+			return;
+		}
+
+		switch (event.getGameState())
+		{
+			case LOGGED_IN:
+				if (CommonUtils.getRegionByRegionId(CommonUtils.getRegionID(client)) == Region.VERZIK)
+				{
+					beginCameraRestore();
+					restoreSavedCameraTargetsIfNeeded();
+				}
+				break;
+		}
+	}
+
+	private void beginCameraRestore()
+	{
+		if (savedCameraYawTarget < 0 || savedCameraPitchTarget < 0)
+		{
+			return;
+		}
+
+		cameraRestoreTicksRemaining = VERZIK_CAMERA_RESTORE_TICKS;
+	}
+
+	private void restoreSavedCameraTargetsIfNeeded()
+	{
+		if (cameraRestoreTicksRemaining <= 0 || savedCameraYawTarget < 0 || savedCameraPitchTarget < 0)
+		{
+			return;
+		}
+
+		client.setCameraYawTarget(savedCameraYawTarget);
+		client.setCameraPitchTarget(savedCameraPitchTarget);
+		cameraRestoreTicksRemaining--;
+	}
+
+	private void clearCameraSnapshot()
+	{
+		savedCameraYawTarget = -1;
+		savedCameraPitchTarget = -1;
+		cameraRestoreTicksRemaining = 0;
+	}
+
 	public void startUp()
 	{
 		memberDawnbringerStatus.clear();
+		clearCameraSnapshot();
 	}
 
 
 	public void shutDown()
 	{
 		memberDawnbringerStatus.clear();
+		clearCameraSnapshot();
 	}
 
 }
