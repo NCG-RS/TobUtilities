@@ -142,6 +142,11 @@ public class TobUtilitiesPlugin extends Plugin
 	public void onGameTick(GameTick tick)
 	{
 		Region oldRegion = region;
+		Region currentRegion = CommonUtils.getRegionByRegionId(CommonUtils.getRegionID(client));
+		if (!currentRegion.equals(Region.VERZIK))
+		{
+			verzikHandler.captureEntryCameraTargets();
+		}
         // metronomeService updates region
 		metronomeService.onGameTick(tick);
 		if (!oldRegion.equals(Region.BLOAT) && region.equals(Region.BLOAT)) {
@@ -150,6 +155,14 @@ public class TobUtilitiesPlugin extends Plugin
 		if (oldRegion.equals(Region.BLOAT) && !region.equals(Region.BLOAT))
 		{
 			bloatHandler.onRoomExit();
+		}
+		if (!oldRegion.equals(Region.VERZIK) && region.equals(Region.VERZIK))
+		{
+			verzikHandler.onRoomEntry();
+		}
+		if (oldRegion.equals(Region.VERZIK) && !region.equals(Region.VERZIK))
+		{
+			verzikHandler.onRoomExit();
 		}
 		if (region.equals(Region.MAIDEN))
 		{
@@ -281,10 +294,16 @@ public class TobUtilitiesPlugin extends Plugin
 	public void onPreMapLoad(PreMapLoad event)
 	{
 		if (Arrays.stream(event.getScene().getMapRegions())
-				.anyMatch(id -> id == Region.BLOAT.getRegionId())) {
+			.anyMatch(id -> id == Region.BLOAT.getRegionId())) {
 			bloatHandler.onPreMapLoad(event);
 		}
 	}
+
+    @Subscribe
+    public void onGameStateChanged(GameStateChanged event)
+    {
+		verzikHandler.onGameStateChanged(event);
+    }
 
 	@Override
 	protected void startUp() throws Exception
