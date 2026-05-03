@@ -46,6 +46,7 @@ import net.runelite.client.util.HotkeyListener;
 
 import javax.inject.Inject;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 @PluginDescriptor(
 	name = "ToB Utilities",
@@ -116,19 +117,6 @@ public class TobUtilitiesPlugin extends Plugin
 	private final Hooks.RenderableDrawListener drawListener = this::shouldDraw;
 
 	private final RenderCallback renderCallback = new RenderCallback() {
-
-		@Override
-		public boolean drawObject(Scene scene, TileObject object) {
-			// Need to calculate the region in this call instead of using the shared one updated by the metronome because
-			// this will get called before onGameTick, so the region will be incorrect when walking into a new room.
-			Region localRegion = CommonUtils.getRegionByRegionId(CommonUtils.getRegionID(client));
-
-			if (localRegion.equals(Region.BLOAT)) {
-				return bloatHandler.drawObject(scene, object);
-			}
-
-			return RenderCallback.super.drawObject(scene, object);
-		}
 
 		@Override
 		public boolean addEntity(Renderable renderable, boolean drawingUi) {
@@ -281,27 +269,22 @@ public class TobUtilitiesPlugin extends Plugin
 		}
 	}
 
-    @Subscribe (priority = -1.0f)
-    public void onBeforeRender(BeforeRender r)
-    {
-        if (region.equals(Region.BLOAT)) {
-            bloatHandler.onBeforeRender(r);
-        }
-    }
-
     @Subscribe
     public void onConfigChanged(ConfigChanged event)
     {
-        bloatHandler.onConfigChanged(event);
-
-		clientThread.invokeLater(this::tryReloadScene);
+		if (Region.BLOAT.equals(region)) {
+			bloatHandler.onConfigChanged(event);
+		}
 	}
 
-    @Subscribe
-    public void onGameStateChanged(GameStateChanged event)
-    {
-        bloatHandler.onGameStateChanged(event);
-    }
+	@Subscribe
+	public void onPreMapLoad(PreMapLoad event)
+	{
+		if (Arrays.stream(event.getScene().getMapRegions())
+				.anyMatch(id -> id == Region.BLOAT.getRegionId())) {
+			bloatHandler.onPreMapLoad(event);
+		}
+	}
 
 	@Override
 	protected void startUp() throws Exception
