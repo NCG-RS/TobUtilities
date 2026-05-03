@@ -177,7 +177,7 @@ public class BloatHandler extends RoomHandler implements RenderCallback
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		for (NPC npc : client.getWorldView(-1).npcs())
+		for (NPC npc : client.getWorldView(WorldView.TOPLEVEL).npcs())
 		{
 			if (PESTILENT_BLOAT.equals(npc.getName()))
 			{
