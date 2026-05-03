@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.WorldView;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -38,7 +39,7 @@ public class BloatPlayerOverlay extends Overlay
 	{
 		if (Region.BLOAT.equals(plugin.region) && config.enableOutlinePlayers())
 		{
-			for (Player player : client.getWorldView(-1).players())
+			for (Player player : client.getWorldView(WorldView.TOPLEVEL).players())
 			{
 				if (player == null || player.isDead())
 				{

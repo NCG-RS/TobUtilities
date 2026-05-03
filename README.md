@@ -12,7 +12,7 @@ The primary goal of this plugin is to minimize the need for mid-raid configurati
 
 ### Bloat
 - The ability to hide self or other players while in bloat room
-- The ability to hide the floor in bloat room with a skybox override (Works with GPU/117)
+- The ability to hide the ground objects in bloat room and adjust the color of the floor
 
 ### Nylocas
 - Aggressive highlighting

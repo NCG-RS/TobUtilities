@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.WorldView;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.gameval.ItemID;
@@ -143,7 +144,7 @@ public class VerzikHandler extends RoomHandler
 	private String getDawnbringerHolderName()
 	{
 
-		for (Player player : client.getWorldView(-1).players())
+		for (Player player : client.getWorldView(WorldView.TOPLEVEL).players())
 		{
 			if (player == null || player.getName() == null)
 			{
@@ -265,7 +266,7 @@ public class VerzikHandler extends RoomHandler
 
 	private boolean isP1VerzikAlive()
 	{
-		return client.getWorldView(-1).npcs()
+		return client.getWorldView(WorldView.TOPLEVEL).npcs()
 			.stream()
 			.anyMatch(npc -> VERZIK_P1_IDS.contains(npc.getId()) && !npc.isDead());
 	}
