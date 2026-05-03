@@ -69,25 +69,6 @@ public class BloatHandler extends RoomHandler implements RenderCallback
 			: !config.hideOtherPlayersDuringBloat();
 	}
 
-//	public boolean shouldDraw(Renderable renderable, boolean drawingUi)
-//	{
-//		if (!(renderable instanceof Player) || !isBloatAlive)
-//		{
-//			return true;
-//		}
-//
-//		Player player = (Player) renderable;
-//
-//		if (player.equals(client.getLocalPlayer()) && !drawingUi)
-//		{
-//			return !config.hideLocalPlayerDuringBloat();
-//		}
-//
-//		return drawingUi
-//			? !config.hideOtherPlayersOverheadsDuringBloat()
-//			: !config.hideOtherPlayersDuringBloat();
-//	}
-
     private void hideBloatGroundObject(Tile tile)
     {
         if (tile == null)
