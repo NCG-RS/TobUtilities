@@ -303,10 +303,22 @@ public interface TobUtilitiesConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hideOthers2DElementsDuringBloat",
+		name = "Hide others 2D",
+		description = "Enable hiding of other players 2D elements while bloat is alive",
+		position = 3,
+		section = Bloat
+	)
+	default boolean hideOtherPlayersOverheadsDuringBloat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "outlinePlayers",
 		name = "Outline players",
 		description = "Enable outlining players ",
-		position = 3,
+		position = 4,
 		section = Bloat
 	)
 	default boolean enableOutlinePlayers()
@@ -318,7 +330,7 @@ public interface TobUtilitiesConfig extends Config
             keyName = "hideBloatFloor",
             name = "Hide floor",
             description = "Enable hiding ground objects in the bloat room",
-            position = 4,
+            position = 5,
             section = Bloat
     )
     default boolean hideBloatFloor()
