@@ -20,6 +20,7 @@ The primary goal of this plugin is to minimize the need for mid-raid configurati
 ### Verzik
 - The ability to hide verzik with a hotkey 
 - An overlay to indicate which player is holding dawnbringer. 
+- The ability to prevent the player from changing perspective on entry to verzik
 This works with party plugin as well to track if a teammate has it in their inventory
 
 Note: If people in your party don't have this plugin, you're better off disabling party integration. For party integration to be effective you want everybody in the party to have it on. 
@@ -56,5 +57,10 @@ Special thanks to Vincent0955 who created the original visual metronome
 - Added the option for a 5t metronome in bloat room
 #### 1.0.6
 - Fixed a bug which made some users unable to start the plugin
+#### 1.0.7
+- Updated implementation for bloat floor hiding for it to work regardless of use of gpu/legacy/117
+- Added ability to hide other players 2d in bloat room
+- Added the option to stop the forced perspective change on entry to verzik
+- Various bug fixes
 
 I can be reached on discord at n_c_g. for any questions/comments/concerns or feature requests

@@ -52,22 +52,21 @@ public class BloatHandler extends RoomHandler implements RenderCallback
     @Override
     public boolean addEntity(Renderable renderable, boolean drawingUi)
 	{
-		if (renderable instanceof Player && isBloatAlive)
+		if (!(renderable instanceof Player) || !isBloatAlive)
 		{
-			if (drawingUi){
-				return true;
-			}
-			Player player = (Player) renderable;
-			if (player.equals(client.getLocalPlayer()))
-			{
-				return !config.hideLocalPlayerDuringBloat();
-			}
-			else
-			{
-				return !config.hideOtherPlayersDuringBloat();
-			}
+			return true;
 		}
-		return RenderCallback.super.addEntity(renderable, drawingUi);
+
+		Player player = (Player) renderable;
+
+		if (player.equals(client.getLocalPlayer()) && !drawingUi)
+		{
+			return !config.hideLocalPlayerDuringBloat();
+		}
+
+		return drawingUi
+			? !config.hideOtherPlayersOverheadsDuringBloat()
+			: !config.hideOtherPlayersDuringBloat();
 	}
 
     private void hideBloatGroundObject(Tile tile)
@@ -177,7 +176,7 @@ public class BloatHandler extends RoomHandler implements RenderCallback
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		for (NPC npc : client.getWorldView(-1).npcs())
+		for (NPC npc : client.getWorldView(WorldView.TOPLEVEL).npcs())
 		{
 			if (PESTILENT_BLOAT.equals(npc.getName()))
 			{

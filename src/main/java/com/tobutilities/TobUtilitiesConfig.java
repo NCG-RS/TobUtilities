@@ -303,10 +303,22 @@ public interface TobUtilitiesConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hideOthers2DElementsDuringBloat",
+		name = "Hide others 2D",
+		description = "Enable hiding of other players 2D elements while bloat is alive",
+		position = 3,
+		section = Bloat
+	)
+	default boolean hideOtherPlayersOverheadsDuringBloat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "outlinePlayers",
 		name = "Outline players",
 		description = "Enable outlining players ",
-		position = 3,
+		position = 4,
 		section = Bloat
 	)
 	default boolean enableOutlinePlayers()
@@ -318,7 +330,7 @@ public interface TobUtilitiesConfig extends Config
             keyName = "hideBloatFloor",
             name = "Hide floor",
             description = "Enable hiding ground objects in the bloat room",
-            position = 4,
+            position = 5,
             section = Bloat
     )
     default boolean hideBloatFloor()
@@ -391,10 +403,22 @@ public interface TobUtilitiesConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "preserveVerzikEntryCamera",
+		name = "Preserve entry camera",
+		description = "Keep the same camera angle when entering the Verzik room",
+		position = 3,
+		section = Verzik
+	)
+	default boolean preserveVerzikEntryCamera()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "enableDawnbringerOverlay",
 		name = "Enable dawnbringer overlay ",
 		description = "Enable overlay over player orb to show who is currently holding dawnbringer",
-		position = 3,
+		position = 4,
 		section = Verzik
 	)
 	default boolean enableDawnbringerOverlay()
@@ -405,7 +429,7 @@ public interface TobUtilitiesConfig extends Config
 		keyName = "enableDawnbringerParty",
 		name = "Enable dawnbringer party integration ",
 		description = "Checks if dawnbringer is  in a teammates inventory - Requires party plugin ",
-		position = 3,
+		position = 5,
 		section = Verzik
 	)
 	default boolean enableDawnbringerParty()
@@ -417,7 +441,7 @@ public interface TobUtilitiesConfig extends Config
 		keyName = "dawnbringerEquippedOverlayColor",
 		name = "Dawnbringer equipped overlay color",
 		description = "Color for dawnbringer holders orb",
-		position = 5,
+		position = 6,
 		section = Verzik
 	)
 	default Color dawnbringerEquippedOverlayColor()
@@ -428,7 +452,7 @@ public interface TobUtilitiesConfig extends Config
 		keyName = "dawnbringerInventoryOverlayColor",
 		name = "Dawnbringer inventory overlay color",
 		description = "Color for orb of player with dawnbringer in inventory (Party required)",
-		position = 6,
+		position = 7,
 		section = Verzik
 	)
 	default Color dawnbringerInventoryOverlayColor()
@@ -440,7 +464,7 @@ public interface TobUtilitiesConfig extends Config
 		keyName = "enableLightbearerOverlay",
 		name = "Enable lightbearer overlay ",
 		description = "Reminds player to equip their lightbearer for P1",
-		position = 7,
+		position = 8,
 		section = Verzik
 	)
 	default boolean enableLightbearerOverlay()
@@ -452,7 +476,7 @@ public interface TobUtilitiesConfig extends Config
 		keyName = "lightbearerOverlayColor",
 		name = "Lightbearer overlay color",
 		description = "Color for lightbearer reminder overlay",
-		position = 8,
+		position = 9,
 		section = Verzik
 	)
 	default Color lightbearerOverlayColor()
@@ -462,4 +486,3 @@ public interface TobUtilitiesConfig extends Config
 
 
 }
-
