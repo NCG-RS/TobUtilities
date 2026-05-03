@@ -1,14 +1,10 @@
 package com.tobutilities.common.util;
 
 import com.tobutilities.common.enums.Region;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginManager;
 
 public class CommonUtils
 {
@@ -42,11 +38,4 @@ public class CommonUtils
 		return playerLocationPoint.getRegionID();
 	}
 
-	public static void checkForLegacyGPUAndPrintWarning(ClientThread clientThread, PluginManager pluginManager, Client client, String message) {
-		for (Plugin plugin : pluginManager.getPlugins()) {
-			if (plugin.getName().equals("GPU (legacy)") && pluginManager.isPluginActive(plugin)) {
-				clientThread.invoke(() -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", message, ""));
-			}
-		}
-	}
 }
