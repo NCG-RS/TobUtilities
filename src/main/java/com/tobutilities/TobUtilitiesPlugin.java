@@ -151,21 +151,10 @@ public class TobUtilitiesPlugin extends Plugin
 		metronomeService.onGameTick(tick);
 		if (!oldRegion.equals(Region.BLOAT) && region.equals(Region.BLOAT)) {
 			bloatHandler.onRoomEntry();
-			if (config.hideBloatFloor())
-			{
-				// GPU/RLHD only consult drawObject while (re)uploading the scene, so entering the
-				// room needs an explicit reload for the floor hide callback to take effect.
-				clientThread.invokeLater(this::tryReloadScene);
-			}
 		}
 		if (oldRegion.equals(Region.BLOAT) && !region.equals(Region.BLOAT))
 		{
 			bloatHandler.onRoomExit();
-			if (config.hideBloatFloor())
-			{
-				// Restore the cached scene once the callback stops hiding Bloat floor objects.
-				clientThread.invokeLater(this::tryReloadScene);
-			}
 		}
 		if (!oldRegion.equals(Region.VERZIK) && region.equals(Region.VERZIK))
 		{
@@ -301,10 +290,18 @@ public class TobUtilitiesPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onPreMapLoad(PreMapLoad event)
+	{
+		if (Arrays.stream(event.getScene().getMapRegions())
+			.anyMatch(id -> id == Region.BLOAT.getRegionId())) {
+			bloatHandler.onPreMapLoad(event);
+		}
+	}
+
     @Subscribe
     public void onGameStateChanged(GameStateChanged event)
     {
-        bloatHandler.onGameStateChanged(event);
 		verzikHandler.onGameStateChanged(event);
     }
 
