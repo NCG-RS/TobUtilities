@@ -151,7 +151,6 @@ public class MetronomeService
 		if (config.metronomeResetHotkey().matches(e))
 		{
 			currentColorIndex = 0;
-			e.consume();
 		}
 	}
 }
