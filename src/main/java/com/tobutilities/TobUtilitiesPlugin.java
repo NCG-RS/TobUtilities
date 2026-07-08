@@ -28,6 +28,8 @@ import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.widgets.Widget;
 
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
@@ -151,10 +153,18 @@ public class TobUtilitiesPlugin extends Plugin
 		metronomeService.onGameTick(tick);
 		if (!oldRegion.equals(Region.BLOAT) && region.equals(Region.BLOAT)) {
 			bloatHandler.onRoomEntry();
+			if (config.hideBloatFloor())
+			{
+				clientThread.invokeLater(this::tryReloadScene);
+			}
 		}
 		if (oldRegion.equals(Region.BLOAT) && !region.equals(Region.BLOAT))
 		{
 			bloatHandler.onRoomExit();
+			if (config.hideBloatFloor())
+			{
+				clientThread.invokeLater(this::tryReloadScene);
+			}
 		}
 		if (!oldRegion.equals(Region.VERZIK) && region.equals(Region.VERZIK))
 		{
@@ -176,6 +186,8 @@ public class TobUtilitiesPlugin extends Plugin
 		{
 			bloatHandler.onGameTick(tick);
 		}
+
+		syncTobHealthBarVisibility();
 	}
 
 
@@ -282,11 +294,25 @@ public class TobUtilitiesPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() == (InterfaceID.TobHud.PROGRESS_CONTAINER >>> 16))
+		{
+			syncTobHealthBarVisibility();
+		}
+	}
+
     @Subscribe
     public void onConfigChanged(ConfigChanged event)
     {
 		if (Region.BLOAT.equals(region)) {
 			bloatHandler.onConfigChanged(event);
+		}
+
+		if ("tobutilities".equals(event.getGroup()) && "hideVanillaTobHealthBar".equals(event.getKey()))
+		{
+			syncTobHealthBarVisibility();
 		}
 	}
 
@@ -304,6 +330,21 @@ public class TobUtilitiesPlugin extends Plugin
     {
 		verzikHandler.onGameStateChanged(event);
     }
+
+	private void syncTobHealthBarVisibility()
+	{
+		Widget tobHealthBar = client.getWidget(InterfaceID.TobHud.PROGRESS_CONTAINER);
+		if (tobHealthBar == null)
+		{
+			return;
+		}
+
+		boolean shouldHide = config.hideVanillaTobHealthBar();
+		if (tobHealthBar.isHidden() != shouldHide)
+		{
+			tobHealthBar.setHidden(shouldHide);
+		}
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -328,6 +369,7 @@ public class TobUtilitiesPlugin extends Plugin
 		renderCallbackManager.register(renderCallback);
 
 		clientThread.invokeLater(this::tryReloadScene);
+		clientThread.invokeLater(this::syncTobHealthBarVisibility);
 	}
 
 	@Override
@@ -355,6 +397,7 @@ public class TobUtilitiesPlugin extends Plugin
 		renderCallbackManager.unregister(renderCallback);
 
 		clientThread.invokeLater(this::tryReloadScene);
+		clientThread.invokeLater(this::syncTobHealthBarVisibility);
 	}
 
 	private void tryReloadScene() {
