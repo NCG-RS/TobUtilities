@@ -33,6 +33,11 @@ public class CommonUtils
 
 	public static int getRegionID(Client client) {
 		Player player = client.getLocalPlayer();
+		// The local player is null while logging in, hopping or reconnecting, and render callbacks still run then
+		if (player == null)
+		{
+			return -1;
+		}
 		final LocalPoint playerLocation = player.getLocalLocation();
 		WorldPoint playerLocationPoint = WorldPoint.fromLocalInstance(client, playerLocation);
 		return playerLocationPoint.getRegionID();
