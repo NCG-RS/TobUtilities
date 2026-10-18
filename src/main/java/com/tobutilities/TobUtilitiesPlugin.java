@@ -116,13 +116,22 @@ public class TobUtilitiesPlugin extends Plugin
 	public Region region = Region.UNKNOWN;
 	private final Hooks.RenderableDrawListener drawListener = this::shouldDraw;
 
+	// addEntity runs once per renderable per frame, so the region is computed once per client cycle and reused
+	private int renderRegionCycle = -1;
+	private Region renderRegion = Region.UNKNOWN;
+
 	private final RenderCallback renderCallback = new RenderCallback() {
 
 		@Override
 		public boolean addEntity(Renderable renderable, boolean drawingUi) {
 			// Need to calculate the region in this call instead of using the shared one updated by the metronome because
 			// this will get called before onGameTick, so the region will be incorrect when walking into a new room.
-			Region localRegion = CommonUtils.getRegionByRegionId(CommonUtils.getRegionID(client));
+			int cycle = client.getGameCycle();
+			if (cycle != renderRegionCycle) {
+				renderRegionCycle = cycle;
+				renderRegion = CommonUtils.getRegionByRegionId(CommonUtils.getRegionID(client));
+			}
+			Region localRegion = renderRegion;
 
 			if (localRegion.equals(Region.BLOAT)) {
 				return bloatHandler.addEntity(renderable, drawingUi);
